@@ -15,6 +15,20 @@
             --steam-color: #66c0f4;
             --text-color: #ffffff;
         }
+		
+				
+		html, body {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+
+        html::-webkit-scrollbar, 
+        body::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+            width: 0 !important;
+            height: 0 !important;
+        }
+
 
         body {
             margin: 0;
@@ -27,107 +41,127 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+			/* Прячем полосу прокрутки для IE, Edge и Firefox */
+			-ms-overflow-style: none;  /* IE и Edge */
+			scrollbar-width: none;  /* Firefox */
+			/* Убираем горизонтальный скролл, если карточка чуть шире экрана */
+            overflow-x: hidden; 
         }
+		
 
         .container {
             width: 90%;
             max-width: 500px;
             text-align: center;
-            padding: 40px 25px;
+            padding: 35px 25px;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 40px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.4);
         }
 
-        h1 {
-            font-weight: 800;
-            font-size: 2.5rem;
-            margin: 0 0 10px 0;
-            letter-spacing: -1px;
-            background: linear-gradient(to bottom, #fff, #ccc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            opacity: 0.6;
-            font-size: 0.9rem;
-            margin-bottom: 30px;
-        }
+        h1 { font-weight: 800; font-size: 2.5rem; margin: 0; letter-spacing: -1px; }
+        .subtitle { opacity: 0.6; font-size: 0.9rem; margin-bottom: 30px; }
 
         .section-title {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 25px 0 12px;
             opacity: 0.5;
-            font-weight: 600;
             text-align: left;
             padding-left: 5px;
         }
 
-        .links-grid {
-            display: grid;
-            gap: 12px;
-        }
-
+        .links-grid { display: grid; gap: 12px; margin-bottom: 20px; }
         .btn {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            padding: 16px 20px;
+            padding: 14px 18px;
             text-decoration: none;
             color: white;
             border-radius: 18px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: scale(1.02);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        .btn b { font-size: 1.05rem; }
-        .btn span { font-size: 0.75rem; opacity: 0.6; margin-top: 4px; }
-
-        /* Цветовые акценты для кнопок */
+        .btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-3px); border-color: rgba(255,255,255,0.3); }
+        .btn b { font-size: 1rem; }
+        .btn span { font-size: 0.75rem; opacity: 0.6; margin-top: 3px; }
+        
         .btn-github { border-left: 4px solid var(--accent-color); }
         .btn-itch { border-left: 4px solid var(--itch-color); }
         .btn-steam { border-left: 4px solid var(--steam-color); }
 
-        .certificate-section {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid var(--glass-border);
-        }
-
+        /* СЕРТИФИКАТ */
+        .certificate-section { margin-top: 10px; }
         .certificate-img {
             max-width: 100%;
             height: auto;
             border-radius: 12px;
-            filter: grayscale(20%);
-            transition: all 0.4s ease;
+            border: 1px solid var(--glass-border);
+            transition: 0.3s;
+            display: block;
+            margin: 0 auto;
+        }
+        .certificate-img:hover { border-color: var(--accent-color); transform: scale(1.02); }
+
+        /* ИГРОВОЙ ПОДВАЛ */
+        .game-footer-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        #game-container {
+            position: relative;
+            margin: 15px auto;
+            width: 280px;
+            background: #000;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        canvas { display: block; margin: 0 auto; }
+        .game-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 8px 12px;
+            font-size: 0.65rem;
+            background: rgba(255,255,255,0.05);
+            color: var(--accent-color);
+            font-family: monospace;
+        }
+        .game-stats { display: flex; justify-content: space-between; }
+        .overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        .btn-game {
+            padding: 8px 20px;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 6px;
+            color: #000;
             cursor: pointer;
-        }
-
-        .certificate-img:hover {
-            filter: grayscale(0%);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
-        .footer {
-            margin-top: 25px;
+            font-weight: 800;
+            text-transform: uppercase;
             font-size: 0.7rem;
-            opacity: 0.3;
-            letter-spacing: 1px;
         }
+
+        .footer-text { margin-top: 15px; font-size: 0.7rem; opacity: 0.3; }
+        .footer-text a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2); }
     </style>
 </head>
 <body>
@@ -136,14 +170,13 @@
         <h1>vZVXv</h1>
         <div class="subtitle">Developer & Gamer</div>
         
-        <!-- GITHUB -->
         <div class="section-title">GitHub проекты</div>
         <div class="links-grid">
-            <a href="https://vzvxv.github.io/Anime-Dashboard/" class="btn btn-github" target="_blank">
+            <a href="https://vzvxv.github.io/Anime-Dashboard" class="btn btn-github" target="_blank">
                 <b>Anime Dashboard</b>
                 <span>Информационная панель для любителей аниме</span>
             </a>
-            <a href="https://vzvxv.github.io/Steam-Game-Roulette/" class="btn btn-github" target="_blank">
+            <a href="https://vzvxv.github.io/Steam-Game-Roulette" class="btn btn-github" target="_blank">
                 <b>Steam Game Roulette</b>
                 <span>Помощник в выборе игры из библиотеки</span>
             </a>
@@ -153,16 +186,15 @@
             </a>
         </div>
 
-        <!-- OTHER -->
         <div class="section-title">Ресурсы</div>
         <div class="links-grid">
             <a href="https://vzvxv.itch.io/whitepixel" class="btn btn-itch" target="_blank">
                 <b>WhitePixel on Itch.io</b>
-                <span>Игровые проекты</span>
+                <span>Игра для Anbernic 28xx/35xx/40xx/+100500MillionK</span>
             </a>
-            <a href="https://steamcommunity.com/id/vZVXv/" class="btn btn-steam" target="_blank">
+            <a href="https://steamcommunity.com/id/vZVXv" class="btn btn-steam" target="_blank">
                 <b>Steam Profile</b>
-                <span>Сообщество</span>
+                <span>Мой профиль Steam</span>
             </a>
         </div>
 
@@ -174,11 +206,157 @@
                      alt="Сертификат vzvxv" class="certificate-img">
             </a>
         </div>
+		
+		
+		
+		<div class="footer-text">&copy; 2026 Built by vZVXv and AI https://google.com/ai</div>
+ 
+ 
+ 
+        <div class="game-footer-section">
+            <div class="section-title" style="text-align: center;">Retro Zone</div>
+            <div id="game-container">
+                <div class="game-info">
+                    <div class="game-stats">
+                        <span>SCORE: <span id="score">0</span></span>
+                        <span>BEST: <span id="best">0</span></span>
+                    </div>
+                    <div style="text-align: right; font-size: 0.55rem; opacity: 0.7;">FPS: <span id="fps">0</span></div>
+                </div>
+                <canvas id="snakeGame" width="280" height="280"></canvas>
+                
+                <div id="start-screen" class="overlay">
+                    <div style="font-size: 0.7rem; margin-bottom: 10px; opacity: 0.7;">WSAD или СТРЕЛКИ</div>
+                    <button class="btn-game" onclick="startGame()">Играть</button>
+                </div>
 
-        <div class="footer">
-            &copy; 2026 Built by vzvxv and AI https://google.com/ai
+                <div id="game-over" class="overlay" style="display: none;">
+                    <div style="font-weight: 800; color: #ff4757; margin-bottom: 5px; font-size: 0.9rem;">GAME OVER</div>
+                    <button class="btn-game" onclick="startGame()">Заново</button>
+                </div>
+            </div>
+           
         </div>
     </div>
 
+    <script>
+        const canvas = document.getElementById("snakeGame");
+        const ctx = canvas.getContext("2d");
+        const scoreEl = document.getElementById("score");
+        const bestEl = document.getElementById("best");
+        const fpsEl = document.getElementById("fps");
+        const gameOverEl = document.getElementById("game-over");
+        const startScreen = document.getElementById("start-screen");
+
+        const box = 20;
+        const gridLimit = 14;
+        let score = 0, snake = [], food = {}, d = "RIGHT", nextD = "RIGHT";
+        let gameActive = false, lastTime = 0, moveTimer = 0;
+        const moveInterval = 95; 
+
+        let bestScore = localStorage.getItem("snakeBestScore") || 0;
+        bestEl.innerText = bestScore;
+
+        const controls = {
+            "w": "UP", "ц": "UP", "arrowup": "UP",
+            "s": "DOWN", "ы": "DOWN", "arrowdown": "DOWN",
+            "a": "LEFT", "ф": "LEFT", "arrowleft": "LEFT",
+            "d": "RIGHT", "в": "RIGHT", "arrowright": "RIGHT"
+        };
+
+        document.addEventListener("keydown", (e) => {
+            const key = e.key.toLowerCase();
+            if (controls[key]) {
+                e.preventDefault();
+                if (!gameActive && (startScreen.style.display !== "none" || gameOverEl.style.display !== "none")) {
+                    startGame();
+                }
+                const newDir = controls[key];
+                if (newDir === "LEFT" && d !== "RIGHT") nextD = "LEFT";
+                if (newDir === "UP" && d !== "DOWN") nextD = "UP";
+                if (newDir === "RIGHT" && d !== "LEFT") nextD = "RIGHT";
+                if (newDir === "DOWN" && d !== "UP") nextD = "DOWN";
+            }
+        });
+
+        function spawnFood() {
+            let newFood;
+            while(true) {
+                newFood = { x: Math.floor(Math.random()*gridLimit), y: Math.floor(Math.random()*gridLimit) };
+                if (!snake.some(s => s.x === newFood.x && s.y === newFood.y)) break;
+            }
+            food = newFood;
+        }
+
+        function gameUpdate() {
+            d = nextD;
+            let head = {x: snake[0].x, y: snake[0].y};
+            if(d === "LEFT") head.x--;
+            if(d === "UP") head.y--;
+            if(d === "RIGHT") head.x++;
+            if(d === "DOWN") head.y++;
+
+            if(head.x < 0 || head.x >= gridLimit || head.y < 0 || head.y >= gridLimit || snake.some(s => s.x === head.x && s.y === head.y)) {
+                gameActive = false;
+                if(score > bestScore) {
+                    bestScore = score;
+                    localStorage.setItem("snakeBestScore", bestScore);
+                    bestEl.innerText = bestScore;
+                }
+                gameOverEl.style.display = "flex";
+                return;
+            }
+
+            snake.unshift(head);
+            if(head.x === food.x && head.y === food.y) {
+                score++;
+                scoreEl.innerText = score;
+                spawnFood();
+            } else {
+                snake.pop();
+            }
+        }
+
+        function render(timestamp) {
+            if(!gameActive) return;
+            const dt = timestamp - lastTime;
+            lastTime = timestamp;
+            fpsEl.innerText = Math.round(1000 / dt) || 0;
+
+            moveTimer += dt;
+            if(moveTimer >= moveInterval) {
+                gameUpdate();
+                moveTimer = 0;
+            }
+
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, 280, 280);
+
+            // Еда
+            ctx.fillStyle = "#fa5c5c";
+            ctx.fillRect(food.x * box + 3, food.y * box + 3, box - 6, box - 6);
+
+            // Змейка
+            snake.forEach((part, i) => {
+                ctx.fillStyle = i === 0 ? "#00d2ff" : "rgba(0, 210, 255, 0.4)";
+                ctx.fillRect(part.x * box + 1, part.y * box + 1, box - 2, box - 2);
+            });
+            
+            requestAnimationFrame(render);
+        }
+
+        function startGame() {
+            score = 0; scoreEl.innerText = "0";
+            snake = [{x: 7, y: 7}, {x: 6, y: 7}, {x: 5, y: 7}];
+            d = "RIGHT"; nextD = "RIGHT";
+            spawnFood();
+            gameActive = true;
+            startScreen.style.display = "none";
+            gameOverEl.style.display = "none";
+            moveTimer = 0;
+            lastTime = performance.now();
+            requestAnimationFrame(render);
+        }
+    </script>
 </body>
 </html>
