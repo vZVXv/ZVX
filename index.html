@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vzvxv | Portfolio</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --accent-color: #00d2ff;
+            --itch-color: #fa5c5c;
+            --steam-color: #66c0f4;
+            --text-color: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            padding: 40px 25px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+            letter-spacing: -1px;
+            background: linear-gradient(to bottom, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            opacity: 0.6;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 25px 0 12px;
+            opacity: 0.5;
+            font-weight: 600;
+            text-align: left;
+            padding-left: 5px;
+        }
+
+        .links-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .btn {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 16px 20px;
+            text-decoration: none;
+            color: white;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: scale(1.02);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn b { font-size: 1.05rem; }
+        .btn span { font-size: 0.75rem; opacity: 0.6; margin-top: 4px; }
+
+        /* Цветовые акценты для кнопок */
+        .btn-github { border-left: 4px solid var(--accent-color); }
+        .btn-itch { border-left: 4px solid var(--itch-color); }
+        .btn-steam { border-left: 4px solid var(--steam-color); }
+
+        .certificate-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .certificate-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            filter: grayscale(20%);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .certificate-img:hover {
+            filter: grayscale(0%);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            margin-top: 25px;
+            font-size: 0.7rem;
+            opacity: 0.3;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>vzvxv</h1>
+        <div class="subtitle">Developer & Gamer</div>
+        
+        <!-- GITHUB -->
+        <div class="section-title">GitHub проекты</div>
+        <div class="links-grid">
+            <a href="https://vzvxv.github.io/Anime-Dashboard/" class="btn btn-github" target="_blank">
+                <b>Anime Dashboard</b>
+                <span>Информационная панель</span>
+            </a>
+            <a href="https://vzvxv.github.io/Steam-Game-Roulette/" class="btn btn-github" target="_blank">
+                <b>Steam Game Roulette</b>
+                <span>Рандомайзер библиотеки</span>
+            </a>
+            <a href="https://vzvxv.github.io/ZVX-and-AI-PING-PONG" class="btn btn-github" target="_blank">
+                <b>AI PING PONG</b>
+                <span>Игра против нейросети</span>
+            </a>
+        </div>
+
+        <!-- OTHER -->
+        <div class="section-title">Ресурсы</div>
+        <div class="links-grid">
+            <a href="https://vzvxv.itch.io/whitepixel" class="btn btn-itch" target="_blank">
+                <b>WhitePixel on Itch.io</b>
+                <span>Игровые проекты</span>
+            </a>
+            <a href="https://steamcommunity.com/id/vZVXv/" class="btn btn-steam" target="_blank">
+                <b>Steam Profile</b>
+                <span>Сообщество</span>
+            </a>
+        </div>
+
+        <!-- СЕРТИФИКАТ ВНИЗУ -->
+        <div class="certificate-section">
+            <div class="section-title" style="text-align: center; margin-top: 0;">Verified Nickname</div>
+            <a href="https://mynickname.com/vZVXv" target="_blank">
+                <img src="https://mynickname.com/img.php?id=971671&sert=1&prel=pMvcgXzm0YK0INoFdFtq5FuZaJJCtbWHvStDEZWrKJVvQvQ5xz47PmTThIGbn%2FSA&lang=1&vid=69971f72747c5" 
+                     alt="Сертификат vzvxv" class="certificate-img">
+            </a>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 Built by vzvxv and AI https://google.com/ai
+        </div>
+    </div>
+
+</body>
+</html>
