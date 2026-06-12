@@ -47,7 +47,7 @@
         /* === КОНТЕЙНЕР === */
         .container {
             width: 90%;
-            max-width: 500px;
+            max-width: 900px; /* Расширен для карточек */
             text-align: center;
             padding: 35px 25px;
             background: var(--glass-bg);
@@ -75,17 +75,11 @@
             padding-left: 5px;
         }
 
-        /* === КНОПКИ И ССЫЛКИ === */
-        .links-grid { 
-            display: grid; 
-            gap: 12px; 
-            margin-bottom: 20px; 
-        }
-        
+        /* === КНОПКИ (Используются в шапке профиля) === */
         .btn {
-            display: flex;
+            display: inline-flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
             padding: 14px 18px;
             text-decoration: none;
             color: white;
@@ -94,6 +88,7 @@
             border: 1px solid var(--glass-border);
             transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             outline: none;
+            margin: 0 auto;
         }
         
         .btn:hover, .btn:focus-visible { 
@@ -103,11 +98,75 @@
         }
         
         .btn b { font-size: 1rem; }
-        .btn span { font-size: 0.75rem; opacity: 0.6; margin-top: 3px; }
+        .btn span { font-size: 0.75rem; opacity: 0.6; margin-top: 3px; font-weight: normal; }
+        .btn-github { border-left: 4px solid var(--accent-color); border-right: 4px solid var(--accent-color); }
+
+        /* === СЕТКА И КАРТОЧКИ ПРОЕКТОВ === */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: var(--text-color);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+        }
+
+        .card:hover, .card:focus-visible {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--glass-border);
+            background: #1a1a2e;
+        }
+
+        .card-content {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-content b {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .card-content span {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            line-height: 1.4;
+        }
+
+        .card-github:hover b { color: var(--accent-color); }
+        .card-github:hover { border-color: var(--accent-color); }
         
-        .btn-github { border-left: 4px solid var(--accent-color); }
-        .btn-itch { border-left: 4px solid var(--itch-color); }
-        .btn-steam { border-left: 4px solid var(--steam-color); }
+        .card-itch:hover b { color: var(--itch-color); }
+        .card-itch:hover { border-color: var(--itch-color); }
+        
+        .card-steam:hover b { color: var(--steam-color); }
+        .card-steam:hover { border-color: var(--steam-color); }
+
+        .card-shiki:hover b { color: #009688; }
+        .card-shiki:hover { border-color: #009688; }
 
         /* === ПРОФИЛЬ И ЧАСЫ === */
         .clock-widget {
@@ -258,13 +317,11 @@
                 <span class="clock-location">VVO</span>
             </div>
             
-            <div class="profile-avatar-container">
-                <img src="https://avatars.githubusercontent.com/u/89864184?v=4" alt="Аватар vZVXv" class="profile-avatar">
-            </div>
+
 
             <h1 style="text-align: center;">
                 <a href="https://github.com/vZVXv?tab=repositories" class="btn btn-github" target="_blank" rel="noopener noreferrer">
-                    vZVXv
+                    <img src="https://avatars.githubusercontent.com/u/89864184?v=4" alt="Аватар vZVXv" class="profile-avatar">
                     <span>Developer & Gamer</span>
                 </a>
             </h1>
@@ -272,52 +329,84 @@
         
         <section>
             <h2 class="section-title">GitHub проекты</h2>
-            <nav class="links-grid">
-                <a href="https://vzvxv.github.io/Anime-Dashboard" class="btn btn-github" target="_blank" rel="noopener noreferrer">
-                    <b>Anime Dashboard</b>
-                    <span>Информационная панель для любителей аниме</span>
+            <nav class="card-grid">
+                
+                <a href="https://vzvxv.github.io/Anime-Dashboard" class="card card-github" target="_blank" rel="noopener noreferrer">
+                    <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img4.jpg" alt="Anime Dashboard" class="card-image">
+                    <div class="card-content">
+                        <b>Anime Dashboard</b>
+                        <span>Информационная панель для любителей аниме</span>
+                    </div>
                 </a>
-                <a href="https://vzvxv.github.io/Steam-Game-Roulette" class="btn btn-github" target="_blank" rel="noopener noreferrer">
-                    <b>Steam Game Roulette</b>
-                    <span>Помощник в выборе игры из библиотеки</span>
+
+                <a href="https://vzvxv.github.io/ZVX-and-AI-PING-PONG" class="card card-github" target="_blank" rel="noopener noreferrer">
+                    <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img3.png" alt="AI PING PONG" class="card-image">
+                    <div class="card-content">
+                        <b>AI PING PONG</b>
+                        <span>Классическая игра созданная ИИ</span>
+                    </div>
                 </a>
-                <a href="https://vzvxv.github.io/ZVX-and-AI-PING-PONG" class="btn btn-github" target="_blank" rel="noopener noreferrer">
-                    <b>AI PING PONG</b>
-                    <span>Классическая игра созданная ИИ</span>
+
+                <a href="https://vzvxv.github.io/ZVX-CASINO/" class="card card-github" target="_blank" rel="noopener noreferrer">
+                    <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img8.png" alt="ZVX CASINO" class="card-image">
+                    <div class="card-content">
+                        <b>ZVX CASINO</b>
+                        <span>Казино с элементами выживания</span>
+                    </div>
                 </a>
-                <a href="https://vzvxv.github.io/ZVX-CASINO/" class="btn btn-github" target="_blank" rel="noopener noreferrer">
-                    <b>ZVX CASINO</b>
-                    <span>Казино с элементами выживания</span>
+
+                <a href="https://vzvxv.github.io/Steam-Finance-Pro/" class="card card-github" target="_blank" rel="noopener noreferrer">
+                    <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img7.jpg" alt="Steam Finance Pro" class="card-image">
+                    <div class="card-content">
+                        <b>Steam Finance Pro</b>
+                        <span>Персональный дашборд истории покупок Steam</span>
+                    </div>
                 </a>
-                <a href="https://vzvxv.github.io/Steam-Finance-Pro/" class="btn btn-github" target="_blank" rel="noopener noreferrer">
-                    <b>Steam Finance Pro</b>
-                    <span>Персональный дашборд истории покупок Steam</span>
+
+                <a href="https://vzvxv.github.io/TV-Show-Tracker/" class="card card-github" target="_blank" rel="noopener noreferrer">
+                    <img src="https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?auto=format&fit=crop&w=500&q=80" alt="TV Show Tracker" class="card-image">
+                    <div class="card-content">
+                        <b>TV Show Tracker</b>
+                        <span>Отслеживание просмотренных сезонов сериалов</span>
+                    </div>
                 </a>
-                <a href="https://vzvxv.github.io/TV-Show-Tracker/" class="btn btn-github" target="_blank" rel="noopener noreferrer">
-                    <b>TV Show Tracker</b>
-                    <span>Отслеживание просмотренных сезонов сериалов</span>
+
+                <a href="https://vzvxv.github.io/R.E.P.O.Bestiary/" class="card card-github" target="_blank" rel="noopener noreferrer">
+                    <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img2.png" alt="R.E.P.O.Bestiary" class="card-image">
+                    <div class="card-content">
+                        <b>R.E.P.O.Bestiary</b>
+                        <span>R.E.P.O. Бестиарий</span>
+                    </div>
                 </a>
-                <a href="https://vzvxv.github.io/R.E.P.O.Bestiary/" class="btn btn-github" target="_blank" rel="noopener noreferrer">
-                    <b>R.E.P.O.Bestiary</b>
-                    <span>R.E.P.O. Бестиарий</span>
-                </a>
+
             </nav>
         </section>
 
         <section>
             <h2 class="section-title">Ресурсы</h2>
-            <nav class="links-grid">
-                <a href="https://vzvxv.itch.io/whitepixel" class="btn btn-itch" target="_blank" rel="noopener noreferrer">
-                    <b>WhitePixel on Itch.io</b>
-                    <span>Игра для Anbernic 28xx/35xx/40xx/+100500MillionK</span>
+            <nav class="card-grid">
+                <a href="https://vzvxv.itch.io/whitepixel" class="card card-itch" target="_blank" rel="noopener noreferrer">
+                    <img src="https://img.itch.zone/aW1hZ2UvMzMxMzAzNS8xOTc4ODM3Mi5qcGc=/794x1000/wO19f1.jpg" alt="Itch.io" class="card-image">
+                    <div class="card-content">
+                        <b>WhitePixel on Itch.io</b>
+                        <span>Игра для Anbernic 28xx/35xx/40xx/+100500MillionK</span>
+                    </div>
                 </a>
-                <a href="https://shikimori.io/ZVX" class="btn btn-github" target="_blank" rel="noopener noreferrer" style="border-left-color: #009688;">
-                    <b>Shikimori</b>
-                    <span>Мой аниме-список</span>
+                
+                <a href="https://shikimori.io/ZVX" class="card card-shiki" target="_blank" rel="noopener noreferrer">
+                    <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img6.jpg" alt="Shikimori" class="card-image">
+                    <div class="card-content">
+                        <b>Shikimori</b>
+                        <span>Мой аниме-список</span>
+                    </div>
                 </a>
-                <a href="https://steamcommunity.com/id/vZVXv" class="btn btn-steam" target="_blank" rel="noopener noreferrer">
-                    <b>Steam Profile</b>
-                    <span>Мой профиль Steam</span>
+
+                <a href="https://steamcommunity.com/id/vZVXv" class="card card-steam" target="_blank" rel="noopener noreferrer">
+                    <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img5.jpg" alt="Steam" class="card-image">
+                    <div class="card-content">
+                        <b>Steam Profile</b>
+                        <span>Мой профиль Steam</span>
+                    </div>
                 </a>
             </nav>
         </section>
@@ -325,7 +414,7 @@
         <section class="certificate-section">
             <h2 class="section-title" style="text-align: center; margin-top: 0;">Verified Nickname</h2>
             <a href="https://mynickname.com/vZVXv" target="_blank" rel="noopener noreferrer">
-                <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/img.jpg" 
+                <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img.jpg" 
                      alt="Сертификат vzvxv" class="certificate-img">
             </a>
         </section>
