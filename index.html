@@ -27,26 +27,46 @@
         }
 
         /* === БАЗОВЫЕ НАСТРОЙКИ ГОРИЗОНТАЛЬНОГО СКРОЛЛА === */
-        html, body {
+        html {
+            background-color: var(--c-background); /* Цвет фона перенесен на html */
+        }
+
+        body {
             margin: 0; padding: 0;
-            background-color: var(--c-background);
+            background: transparent; /* Убрано перекрытие для треугольников */
             color: var(--c-text);
             font-family: "Source Sans Pro", "Roboto", "Arial", sans-serif;
-            overflow: hidden; /* Блокируем скролл всего окна */
+            overflow: hidden; 
             color-scheme: dark;
             height: 100vh; width: 100vw;
         }
 
-        /* === АНИМИРОВАННЫЙ ФОН === */
+        /* === АНИМИРОВАННЫЙ ФОН (ОБНОВЛЕННЫЙ) === */
         body::before, body::after {
             content: ""; position: fixed; z-index: -1; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: repeat center top / auto fixed; opacity: 0.08; pointer-events: none;
+            background-repeat: repeat; 
+            background-position: center top; 
+            pointer-events: none;
         }
-        body::before { background-image: var(--i-triangles-top); animation: 10s ease-in-out breath-in 1, 30s ease-in-out 10s breath infinite; }
-        body::after { background-image: var(--i-triangles-bottom); animation: 10s ease-in-out breath-in 1 reverse, 44s ease-in-out 10s breath-reverse infinite; }
-        @keyframes breath-in { 0%, 100%, 19%, 77% { opacity: 0.08; } 50%, 80% { opacity: 0.07; } 70% { opacity: 0.091; } 30%, 87% { opacity: 0.067; } 0%, 20%, 56%, 97%, 33%, 45%, 100% { background-position-x: 0%; } 30%, 40% { background-position-x: 250px; } 60%, 80% { background-position-x: -400px; } }
-        @keyframes breath { 0%, 100%, 19%, 77% { opacity: 0.10; } 50%, 80% { opacity: 0.07; } 70% { opacity: 0.13; } 30%, 87% { opacity: 0.08; } 0% { background-position-x: 0px; } 50% { background-position-x: 330px; } 55% { background-position-x: 275px; } 100% { background-position-x: 660px; } }
-        @keyframes breath-reverse { 0%, 100%, 19%, 77% { opacity: 0.08; } 50%, 80% { opacity: 0.11; } 70% { opacity: 0.05; } 30%, 87% { opacity: 0.065; } 0% { background-position-x: 0px; } 40% { background-position-x: -440px; } 43% { background-position-x: -605px; } 100% { background-position-x: -770px; } }
+        body::before { 
+            background-image: var(--i-triangles-top); 
+            animation: bg-drift 40s linear infinite; 
+        }
+        body::after { 
+            background-image: var(--i-triangles-bottom); 
+            animation: bg-drift-reverse 50s linear infinite; 
+        }
+        
+        @keyframes bg-drift { 
+            0% { background-position: 0px 0%; opacity: 0.1; } 
+            50% { opacity: 0.25; } 
+            100% { background-position: 1000px 0%; opacity: 0.1; } 
+        }
+        @keyframes bg-drift-reverse { 
+            0% { background-position: 0px 0%; opacity: 0.1; } 
+            50% { opacity: 0.2; } 
+            100% { background-position: -1000px 0%; opacity: 0.1; } 
+        }
 
         /* === НАВИГАЦИЯ: СТРЕЛКИ === */
         .nav-arrow {
@@ -62,12 +82,20 @@
             cursor: pointer;
             display: flex; justify-content: center; align-items: center;
             font-size: 22px;
-            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.3s ease, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s, color 0.2s, box-shadow 0.2s;
             backdrop-filter: blur(5px);
+            opacity: 1;
+            pointer-events: all;
         }
         .nav-left { left: 15px; clip-path: polygon(100% 0, 100% 100%, 15px 100%, 0 50%, 15px 0); }
         .nav-right { right: 15px; clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 0 100%); }
         .nav-arrow:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); box-shadow: 0 0 15px var(--accent-color); }
+        
+        /* Класс для скрытия стрелок */
+        .nav-arrow.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
 
         /* === НАВИГАЦИЯ: НИЖНЕЕ МЕНЮ === */
         .cyber-nav {
@@ -96,25 +124,22 @@
         .main-container {
             width: 100vw; height: 100vh;
             display: flex; align-items: center;
-            padding: 0 50vw; /* Заглушка, чтобы первая и последняя секция были по центру */
+            padding: 0 50vw;
             box-sizing: border-box;
             gap: 60px;
-            
-            /* Секрет идеального скролла */
             overflow-x: auto;
             overflow-y: hidden;
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
         }
 
-        /* Прячем системный скроллбар */
         .main-container::-webkit-scrollbar { display: none; }
         .main-container { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* === HUD-ПАНЕЛИ (СЕКЦИИ) === */
         .panel {
             flex: 0 0 auto;
-            scroll-snap-align: center; /* Центрируем панель при скролле */
+            scroll-snap-align: center;
             width: 850px;
             max-height: 80vh;
             background: var(--c-foreground-menu);
@@ -126,12 +151,10 @@
             box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
-        /* Индивидуальные размеры панелей */
         #panel-profile { width: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         #panel-cert { width: 600px; display: flex; flex-direction: column; align-items: center; }
         #panel-terminal { width: 400px; display: flex; flex-direction: column; align-items: center; }
 
-        /* Внутренний скроллбар панелей */
         .panel::-webkit-scrollbar { width: 6px; }
         .panel::-webkit-scrollbar-track { background: transparent; }
         .panel::-webkit-scrollbar-thumb { background: var(--c-border-dark); }
@@ -186,7 +209,7 @@
         /* Мобильная адаптация */
         @media (max-width: 900px) {
             html, body { overflow-y: auto; overflow-x: hidden; height: auto; }
-            .nav-arrow, .cyber-nav { display: none; } /* Прячем стрелки на мобилках */
+            .nav-arrow, .cyber-nav { display: none; }
             .main-container { flex-direction: column; padding: 20px; gap: 20px; height: auto; overflow: visible; scroll-snap-type: none; }
             .panel { width: 100% !important; max-height: none; overflow-y: visible; scroll-snap-align: none; }
         }
@@ -194,7 +217,7 @@
 </head>
 <body>
 
-    <button class="nav-arrow nav-left" id="btn-left" aria-label="Назад">&#9664;</button>
+    <button class="nav-arrow nav-left hidden" id="btn-left" aria-label="Назад">&#9664;</button>
     <button class="nav-arrow nav-right" id="btn-right" aria-label="Вперед">&#9654;</button>
 
     <div class="cyber-nav">
@@ -349,21 +372,29 @@
             const container = document.getElementById('scroll-box');
             const sections = Array.from(document.querySelectorAll('.panel'));
             const navDots = document.querySelectorAll('.nav-dot');
+            const btnLeft = document.getElementById('btn-left');
+            const btnRight = document.getElementById('btn-right');
             
             // Фикс сдвига для первой секции при загрузке
-            setTimeout(() => { container.scrollLeft = 0; }, 100);
+            setTimeout(() => { 
+                container.scrollLeft = 0; 
+            }, 100);
 
-            // Функция подсветки нижнего меню при скролле
+            // Функция подсветки нижнего меню и управления видимостью боковых стрелок при скролле
             container.addEventListener('scroll', () => {
                 let currentId = '';
-                sections.forEach(sec => {
+                let currentIndex = 0;
+                
+                sections.forEach((sec, index) => {
                     const rect = sec.getBoundingClientRect();
-                    // Если панель находится близко к центру экрана
+                    // Вычисляем, какая панель находится ближе всего к центру экрана
                     if (rect.left >= -window.innerWidth / 2 && rect.left < window.innerWidth / 2) {
                         currentId = sec.id;
+                        currentIndex = index;
                     }
                 });
                 
+                // Подсветка кнопок меню
                 navDots.forEach(dot => {
                     if (dot.dataset.target === currentId) {
                         dot.classList.add('active');
@@ -371,6 +402,20 @@
                         dot.classList.remove('active');
                     }
                 });
+
+                // Скрываем левую стрелку, если мы на первой панели
+                if (currentIndex === 0) {
+                    btnLeft.classList.add('hidden');
+                } else {
+                    btnLeft.classList.remove('hidden');
+                }
+
+                // Скрываем правую стрелку, если мы на последней панели
+                if (currentIndex === sections.length - 1) {
+                    btnRight.classList.add('hidden');
+                } else {
+                    btnRight.classList.remove('hidden');
+                }
             });
 
             // Нажатие на точки в нижнем меню
@@ -387,10 +432,10 @@
             });
 
             // Нажатие на боковые стрелки
-            document.getElementById('btn-left').addEventListener('click', () => {
+            btnLeft.addEventListener('click', () => {
                 container.scrollBy({ left: -window.innerWidth * 0.6, behavior: 'smooth' });
             });
-            document.getElementById('btn-right').addEventListener('click', () => {
+            btnRight.addEventListener('click', () => {
                 container.scrollBy({ left: window.innerWidth * 0.6, behavior: 'smooth' });
             });
 
