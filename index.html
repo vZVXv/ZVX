@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>vZVXv | Cyber Portfolio</title>
     <style>
-        /* === ПЕРЕМЕННЫЕ === */
+										  
         @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700;800&display=swap');
 
         :root {
@@ -26,14 +26,14 @@
             --shiki-color: #009688;
         }
 
-        /* === БАЗОВЫЕ НАСТРОЙКИ ГОРИЗОНТАЛЬНОГО СКРОЛЛА === */
+																									 
         html {
-            background-color: var(--c-background); /* Цвет фона перенесен на html */
+            background-color: var(--c-background);
         }
 
         body {
             margin: 0; padding: 0;
-            background: transparent; /* Убрано перекрытие для треугольников */
+            background: transparent;
             color: var(--c-text);
             font-family: "Source Sans Pro", "Roboto", "Arial", sans-serif;
             overflow: hidden; 
@@ -41,7 +41,7 @@
             height: 100vh; width: 100vw;
         }
 
-        /* === АНИМИРОВАННЫЙ ФОН (ОБНОВЛЕННЫЙ) === */
+																				
         body::before, body::after {
             content: ""; position: fixed; z-index: -1; top: 0; left: 0; width: 100vw; height: 100vh;
             background-repeat: repeat; 
@@ -68,7 +68,7 @@
             100% { background-position: -1000px 0%; opacity: 0.1; } 
         }
 
-        /* === НАВИГАЦИЯ: СТРЕЛКИ === */
+														
         .nav-arrow {
             position: fixed;
             top: 50%;
@@ -91,13 +91,13 @@
         .nav-right { right: 15px; clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 0 100%); }
         .nav-arrow:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); box-shadow: 0 0 15px var(--accent-color); }
         
-        /* Класс для скрытия стрелок */
+															 
         .nav-arrow.hidden {
             opacity: 0;
             pointer-events: none;
         }
 
-        /* === НАВИГАЦИЯ: НИЖНЕЕ МЕНЮ === */
+															   
         .cyber-nav {
             position: fixed;
             bottom: 20px; left: 50%; transform: translateX(-50%);
@@ -120,7 +120,7 @@
         }
         .nav-dot:hover, .nav-dot.active { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
 
-        /* === ГЛАВНЫЙ КОНТЕЙНЕР (SCROLL SNAP) === */
+																	 
         .main-container {
             width: 100vw; height: 100vh;
             display: flex; align-items: center;
@@ -136,11 +136,12 @@
         .main-container::-webkit-scrollbar { display: none; }
         .main-container { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* === HUD-ПАНЕЛИ (СЕКЦИИ) === */
+													 
         .panel {
             flex: 0 0 auto;
             scroll-snap-align: center;
-            width: 850px;
+            width: 85vw;
+            max-width: 850px;
             max-height: 80vh;
             background: var(--c-foreground-menu);
             border: 2px solid var(--c-border-dark);
@@ -149,21 +150,22 @@
             position: relative;
             clip-path: polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
             box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
         }
 
-        #panel-profile { width: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        #panel-cert { width: 600px; display: flex; flex-direction: column; align-items: center; }
-        #panel-terminal { width: 400px; display: flex; flex-direction: column; align-items: center; }
+        #panel-profile { max-width: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #panel-cert { max-width: 600px; display: flex; flex-direction: column; align-items: center; }
+        #panel-terminal { max-width: 400px; display: flex; flex-direction: column; align-items: center; }
 
         .panel::-webkit-scrollbar { width: 6px; }
         .panel::-webkit-scrollbar-track { background: transparent; }
         .panel::-webkit-scrollbar-thumb { background: var(--c-border-dark); }
         .panel::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
 
-        /* === ТИПОГРАФИКА И ЗАГОЛОВКИ === */
+																  
         .section-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 3px; margin: 0 0 25px 0; color: var(--c-border-light); text-align: left; border-bottom: 1px solid var(--c-border-dark); padding-bottom: 10px; width: 100%; }
 
-        /* === ПРОФИЛЬ И ЧАСЫ === */
+												
         .clock-widget { display: inline-flex; align-items: center; gap: 10px; padding: 10px 20px; background: var(--c-foreground-secondary); border: 1px solid var(--c-border-dark); margin-bottom: 30px; font-family: monospace; font-size: 1rem; color: var(--accent-color); clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%); }
         .clock-dot { width: 8px; height: 8px; background: var(--accent-color); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); box-shadow: 0 0 10px var(--accent-color); animation: blink 2s infinite; }
         .clock-location { font-size: 0.75rem; color: var(--c-border-light); border-left: 1px solid var(--c-border-dark); padding-left: 10px; }
@@ -177,7 +179,7 @@
         .profile-avatar { width: 120px; height: 120px; border: 2px solid var(--c-border-dark); background: var(--c-foreground-secondary); object-fit: cover; transition: 0.3s; clip-path: polygon(25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%); }
         .btn-profile:hover .profile-avatar { border-color: var(--accent-color); }
 
-        /* === КАРТОЧКИ === */
+									  
         .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
         .card { position: relative; display: flex; flex-direction: column; text-decoration: none; color: var(--c-text); background: var(--c-foreground-secondary); border: 1px solid var(--c-border-dark); transition: 0.2s; text-align: left; z-index: 1; clip-path: polygon(0 10px, 10px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%); }
         .card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: -1; background: linear-gradient(to top, var(--c-foreground-secondary) 15px, var(--c-foreground) 0); pointer-events: none; }
@@ -192,11 +194,11 @@
         .card-steam:hover b { color: var(--steam-color); } .card-steam:hover { border-color: var(--steam-color); }
         .card-shiki:hover b { color: var(--shiki-color); } .card-shiki:hover { border-color: var(--shiki-color); }
 
-        /* === СЕРТИФИКАТ === */
+										  
         .certificate-img { max-width: 100%; height: auto; border: 2px solid var(--c-border-dark); transition: 0.3s; display: block; margin: 0 auto; clip-path: polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%); }
         .certificate-img:hover { border-color: var(--accent-color); }
 
-        /* === РЕТРО-ИГРА === */
+										 
         #game-container { position: relative; margin: 0 auto 20px; width: 280px; background: #000; border: 2px solid var(--c-border-dark); clip-path: polygon(0 10px, 10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); }
         canvas { display: block; margin: 0 auto; }
         .game-info { display: flex; flex-direction: column; gap: 2px; padding: 8px 12px; font-size: 0.75rem; background: var(--c-foreground-secondary); color: var(--accent-color); font-family: monospace; border-bottom: 1px solid var(--c-border-dark); }
@@ -206,12 +208,12 @@
         .btn-game:hover { background: var(--accent-color); color: #000; }
         .footer-text { margin-top: auto; font-size: 0.8rem; color: var(--c-border-light); font-family: monospace; }
         
-        /* Мобильная адаптация */
+												   
         @media (max-width: 900px) {
             html, body { overflow-y: auto; overflow-x: hidden; height: auto; }
             .nav-arrow, .cyber-nav { display: none; }
             .main-container { flex-direction: column; padding: 20px; gap: 20px; height: auto; overflow: visible; scroll-snap-type: none; }
-            .panel { width: 100% !important; max-height: none; overflow-y: visible; scroll-snap-align: none; }
+            .panel { width: 100% !important; max-width: none; max-height: none; overflow-y: visible; scroll-snap-align: none; }
         }
     </style>
 </head>
@@ -221,8 +223,8 @@
     <button class="nav-arrow nav-right" id="btn-right" aria-label="Вперед">&#9654;</button>
 
     <div class="cyber-nav">
-        <button class="nav-dot active" data-target="panel-profile">[01] ПРОФИЛЬ</button>
-        <button class="nav-dot" data-target="panel-projects">[02] ПРОЕКТЫ</button>
+        <button class="nav-dot" data-target="panel-profile">[01] ПРОФИЛЬ</button>
+        <button class="nav-dot active" data-target="panel-projects">[02] ПРОЕКТЫ</button>
         <button class="nav-dot" data-target="panel-mods">[03] ЛОКАЛИЗАЦИИ</button>
         <button class="nav-dot" data-target="panel-resources">[04] РЕСУРСЫ</button>
         <button class="nav-dot" data-target="panel-cert">[05] СЕРТИФИКАТ</button>
@@ -377,33 +379,48 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // === ЛОГИКА НАВИГАЦИИ ===
+													  
             const container = document.getElementById('scroll-box');
             const sections = Array.from(document.querySelectorAll('.panel'));
             const navDots = document.querySelectorAll('.nav-dot');
             const btnLeft = document.getElementById('btn-left');
             const btnRight = document.getElementById('btn-right');
             
-            // Фикс сдвига для первой секции при загрузке
+																							 
             setTimeout(() => { 
-                container.scrollLeft = 0; 
+                const projectsPanel = document.getElementById('panel-projects');
+                if (projectsPanel) {
+                    container.scrollLeft = projectsPanel.offsetLeft - (window.innerWidth / 2) + (projectsPanel.offsetWidth / 2);
+                }
             }, 100);
 
-            // Функция подсветки нижнего меню и управления видимостью боковых стрелок при скролле
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 900) {
+                    const activeDot = document.querySelector('.nav-dot.active');
+                    if (activeDot) {
+                        const targetId = activeDot.dataset.target;
+                        const targetEl = document.getElementById(targetId);
+                        if (targetEl) {
+                            container.scrollLeft = targetEl.offsetLeft - (window.innerWidth / 2) + (targetEl.offsetWidth / 2);
+                        }
+                    }
+                }
+            });
+
             container.addEventListener('scroll', () => {
                 let currentId = '';
                 let currentIndex = 0;
                 
                 sections.forEach((sec, index) => {
                     const rect = sec.getBoundingClientRect();
-                    // Вычисляем, какая панель находится ближе всего к центру экрана
+																																		
                     if (rect.left >= -window.innerWidth / 2 && rect.left < window.innerWidth / 2) {
                         currentId = sec.id;
                         currentIndex = index;
                     }
                 });
                 
-                // Подсветка кнопок меню
+														   
                 navDots.forEach(dot => {
                     if (dot.dataset.target === currentId) {
                         dot.classList.add('active');
@@ -412,14 +429,14 @@
                     }
                 });
 
-                // Скрываем левую стрелку, если мы на первой панели
+																										   
                 if (currentIndex === 0) {
                     btnLeft.classList.add('hidden');
                 } else {
                     btnLeft.classList.remove('hidden');
                 }
 
-                // Скрываем правую стрелку, если мы на последней панели
+																												   
                 if (currentIndex === sections.length - 1) {
                     btnRight.classList.add('hidden');
                 } else {
@@ -427,20 +444,20 @@
                 }
             });
 
-            // Нажатие на точки в нижнем меню
+																	  
             navDots.forEach(dot => {
                 dot.addEventListener('click', (e) => {
                     const targetId = e.target.dataset.target;
                     const targetEl = document.getElementById(targetId);
                     if(targetEl) {
-                        // Считаем точную позицию для центрирования
+																									   
                         const scrollPos = targetEl.offsetLeft - (window.innerWidth / 2) + (targetEl.offsetWidth / 2);
                         container.scrollTo({ left: scrollPos, behavior: 'smooth' });
                     }
                 });
             });
 
-            // Нажатие на боковые стрелки
+																
             btnLeft.addEventListener('click', () => {
                 container.scrollBy({ left: -window.innerWidth * 0.6, behavior: 'smooth' });
             });
@@ -448,30 +465,30 @@
                 container.scrollBy({ left: window.innerWidth * 0.6, behavior: 'smooth' });
             });
 
-            // Нативный обработчик колесика мыши (только если юзер не скроллит текст внутри панели)
+																																										  
             container.addEventListener('wheel', (evt) => {
                 const hoveredPanel = evt.target.closest('.panel');
                 if (hoveredPanel) {
                     const canScrollUp = hoveredPanel.scrollTop > 0;
                     const canScrollDown = hoveredPanel.scrollTop < hoveredPanel.scrollHeight - hoveredPanel.clientHeight;
-                    // Если можно скроллить контент вверх/вниз — не мешаем
+																													  
                     if ((evt.deltaY < 0 && canScrollUp) || (evt.deltaY > 0 && canScrollDown)) {
                         return; 
                     }
                 }
                 
-                // Пропускаем родной горизонтальный скролл (например, тачпады)
+																																 
                 if (Math.abs(evt.deltaX) > Math.abs(evt.deltaY)) return;
 
                 if (!evt.ctrlKey && window.innerWidth > 900) {
                     evt.preventDefault();
-                    // Крутишь колесико - переключает панель
+																							
                     container.scrollBy({ left: evt.deltaY * 3, behavior: 'auto' });
                 }
             }, { passive: false });
 
 
-            // === ЛОГИКА ЧАСОВ ===
+											  
             function updateClock() {
                 const now = new Date();
                 document.getElementById('clock').innerText = now.toLocaleTimeString('ru-RU', { 
@@ -480,7 +497,7 @@
             }
             setInterval(updateClock, 1000); updateClock();
 
-            // === ЛОГИКА ИГРЫ ЗМЕЙКА ===
+														 
             const canvas = document.getElementById("snakeGame");
             const ctx = canvas.getContext("2d");
             const scoreEl = document.getElementById("score"), bestEl = document.getElementById("best"), fpsEl = document.getElementById("fps");
@@ -498,7 +515,7 @@
             document.addEventListener("keydown", (e) => {
                 const key = e.key.toLowerCase();
                 
-                // Если игра активна (или экраны игры открыты), играем
+																											   
                 if(gameActive || startScreen.style.display !== "none" || gameOverEl.style.display !== "none") {
                     if (controls[key]) {
                         e.preventDefault();
@@ -510,7 +527,7 @@
                         if (newDir === "DOWN" && d !== "UP") nextD = "DOWN";
                     }
                 } 
-                // Если игра НЕ активна, используем стрелки клавиатуры для навигации по сайту
+																																							
                 else if (window.innerWidth > 900) {
                     if (e.key === "ArrowLeft") container.scrollBy({ left: -window.innerWidth * 0.6, behavior: 'smooth' });
                     if (e.key === "ArrowRight") container.scrollBy({ left: window.innerWidth * 0.6, behavior: 'smooth' });
