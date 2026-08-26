@@ -88,8 +88,8 @@ canvas { display: block; margin: 0 auto; }
 </head>
 <body>
 <div class="cyber-nav">
-<button class="nav-dot active" data-index="0">ПРОФИЛЬ</button>
-<button class="nav-dot" data-index="1">ПРОЕКТЫ</button>
+<button class="nav-dot" data-index="0">ПРОФИЛЬ</button>
+<button class="nav-dot active" data-index="1">ПРОЕКТЫ</button>
 <button class="nav-dot" data-index="2">ЛОКАЛИЗАЦИИ</button>
 <button class="nav-dot" data-index="3">РЕСУРСЫ</button>
 <button class="nav-dot" data-index="4">СЕРТИФИКАТ</button>
@@ -188,6 +188,10 @@ canvas { display: block; margin: 0 auto; }
 <a href="https://steamcommunity.com/id/vZVXv" class="card" target="_blank">
 <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img5.jpg" alt="Steam" class="card-image">
 <div class="card-content"><b>Steam Profile</b><span>Игровой профиль и статистика</span></div>
+</a>
+<a href="https://boosty.to/zvx" class="card" target="_blank">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img21.jpg" alt="boosty" class="card-image">
+<div class="card-content"><b>boosty</b><span>На кофе с булочкой</span></div>
 </a>
 </nav>
 </section>
@@ -329,6 +333,22 @@ gameActive = true; startScreen.style.display = "none"; gameOverEl.style.display 
 moveTimer = 0; lastTime = performance.now();
 requestAnimationFrame(render);
 }
+
+
+
+window.addEventListener('DOMContentLoaded', () => {
+    const targetIndex = 1; // 1 = Проекты
+    if (isDesktop) {
+        container.scrollLeft = targetIndex * window.innerWidth;
+    } else {
+        const panels = document.querySelectorAll('.panel');
+        if (panels[targetIndex]) {
+            panels[targetIndex].scrollIntoView();
+        }
+    }
+});
+
+
 </script>
 </body>
 </html>
