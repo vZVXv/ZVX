@@ -283,7 +283,7 @@ rknToggleBtn.addEventListener('click', () => applyRKNState(!isRknActive));
 
 // Автоматическая активация при запуске с телефона
 if (window.innerWidth <= 900 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    applyRKNState(true);
+    applyRKNState(false);
 }
 // ===============================
 
