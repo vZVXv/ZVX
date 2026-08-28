@@ -46,7 +46,7 @@ border: 1px solid rgba(255,255,255,0.05); overflow: hidden;
 text-decoration: none; transition: 0.3s; backdrop-filter: blur(10px);
 }
 .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,229,255,0.1); }
-.card-image { width: 100%; height: 150px; object-fit: cover; }
+.card-image { width: 100%; height: 150px; object-fit: cover; transition: opacity 0.3s ease; }
 .card-content { padding: 20px; }
 .card-content b { color: var(--title); display: block; font-size: 1.1rem; margin-bottom: 10px; }
 .card-content span { font-size: 0.85rem; color: var(--text); }
@@ -69,7 +69,7 @@ font-family: inherit; font-weight: 700; font-size: 0.8rem; transition: 0.3s;
 .btn-profile b { font-size: 2rem; color: var(--title); }
 .btn-profile span { font-size: 1rem; color: var(--text); margin-top: 5px; }
 .clock-widget { font-size: 1.2rem; font-family: monospace; color: var(--accent); margin-bottom: 30px; letter-spacing: 2px; }
-.certificate-img { max-width: 90%; max-height: 60vh; border-radius: 12px; border: 2px solid rgba(255,255,255,0.1); transition: 0.3s; }
+.certificate-img { max-width: 90%; max-height: 60vh; border-radius: 12px; border: 2px solid rgba(255,255,255,0.1); transition: opacity 0.3s ease, border-color 0.3s ease; }
 .certificate-img:hover { border-color: var(--accent); }
 #game-container { position: relative; background: #000; border-radius: 12px; overflow: hidden; border: 2px solid rgba(255,255,255,0.1); width: 280px; margin: 0 auto; }
 .game-info { display: flex; justify-content: space-between; padding: 10px 15px; background: #111; font-family: monospace; font-size: 0.9rem; color: var(--accent); }
@@ -270,12 +270,30 @@ function applyRKNState(state) {
     rknToggleBtn.classList.toggle('active', isRknActive);
     
     document.querySelectorAll('img[data-rkn]').forEach(img => {
-        // Сохраняем оригинальную ссылку при первом проходе, если её еще нет
-        if (!img.dataset.original) {
-            img.dataset.original = img.src; 
+        // Используем getAttribute, чтобы получить сырую ссылку из HTML, минуя трансформации браузера
+        if (!img.hasAttribute('data-original')) {
+            img.setAttribute('data-original', img.getAttribute('src')); 
         }
-        // Меняем источник изображения в зависимости от состояния
-        img.src = isRknActive ? img.dataset.rkn : img.dataset.original;
+        
+        const targetSrc = isRknActive ? img.getAttribute('data-rkn') : img.getAttribute('data-original');
+        
+        // Проверяем, изменилась ли ссылка на самом деле
+        if (img.getAttribute('src') !== targetSrc) {
+            // Уменьшаем прозрачность для эффекта загрузки
+            img.style.opacity = '0.3';
+            
+            // Принудительно сбрасываем src, чтобы браузер начал новую загрузку
+            img.removeAttribute('src');
+            
+            // Используем микротаймаут, чтобы заставить DOM обновиться
+            setTimeout(() => {
+                img.setAttribute('src', targetSrc);
+                
+                // Возвращаем видимость после успешной загрузки или ошибки
+                img.onload = () => img.style.opacity = '1';
+                img.onerror = () => img.style.opacity = '1';
+            }, 50);
+        }
     });
 }
 
