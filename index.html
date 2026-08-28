@@ -78,14 +78,46 @@ font-family: inherit; font-weight: 700; font-size: 0.8rem; transition: 0.3s;
 .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
 canvas { display: block; margin: 0 auto; }
 .footer-text { margin-top: 20px; font-size: 0.8rem; color: #555; font-family: monospace; }
+
+/* Стили для кнопки RKN */
+.rkn-toggle-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    background: rgba(10, 12, 16, 0.8);
+    border: 2px solid #ff0055;
+    color: #ff0055;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    backdrop-filter: blur(10px);
+}
+.rkn-toggle-btn:hover {
+    background: rgba(255, 0, 85, 0.1);
+}
+.rkn-toggle-btn.active {
+    background: #ff0055;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+}
+
 @media (max-width: 900px) {
   .panel { padding: 40px 5vw 120px; height: auto; min-height: 100vh; overflow-y: visible; scroll-snap-align: start; flex: 0 0 auto; width: 100%; }
   .main-container { overflow-y: auto; overflow-x: hidden; scroll-snap-type: y mandatory; flex-direction: column; }
   .cyber-nav { flex-wrap: wrap; justify-content: center; width: 90%; border-radius: 20px; }
+  .rkn-toggle-btn { top: 10px; right: 10px; padding: 8px 12px; font-size: 0.8rem; }
 }
 </style>
 </head>
 <body>
+
+<button id="rknToggle" class="rkn-toggle-btn">Я♥РКН</button>
+
 <div class="cyber-nav">
 <button class="nav-dot active" data-index="0">ПРОФИЛЬ</button>
 <button class="nav-dot" data-index="1">ПРОЕКТЫ</button>
@@ -98,7 +130,7 @@ canvas { display: block; margin: 0 auto; }
 <header class="panel">
 <div class="clock-widget" id="clock">00:00:00</div>
 <a href="https://github.com/vZVXv?tab=repositories" class="btn-profile" target="_blank" rel="noopener noreferrer">
-<img src="https://avatars.githubusercontent.com/u/89864184?v=4" alt="Аватар vZVXv" class="profile-avatar">
+<img src="https://avatars.githubusercontent.com/u/89864184?v=4" data-rkn="RKN_https://avatars.githubusercontent.com/u/89864184?v=4" alt="Аватар vZVXv" class="profile-avatar">
 <b>vZVXv</b>
 <span>Developer & Gamer</span>
 </a>
@@ -107,35 +139,35 @@ canvas { display: block; margin: 0 auto; }
 <h2 class="section-title">GitHub проекты</h2>
 <nav class="card-grid">
 <a href="https://vzvxv.github.io/ZVX-and-AI-PING-PONG" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img3.png" alt="AI PING PONG" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img3.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img3.png" alt="AI PING PONG" class="card-image">
 <div class="card-content"><b>AI PING PONG</b><span>Классическая игра созданная ИИ</span></div>
 </a>
 <a href="https://vzvxv.github.io/ZVX-CASINO/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img8.png" alt="ZVX CASINO" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img8.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img8.png" alt="ZVX CASINO" class="card-image">
 <div class="card-content"><b>ZVX CASINO</b><span>Казино с элементами выживания</span></div>
 </a>
 <a href="https://vzvxv.github.io/Steam-Finance-Pro/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img7.png" alt="Steam Finance Pro" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img7.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img7.png" alt="Steam Finance Pro" class="card-image">
 <div class="card-content"><b>Steam Finance Pro</b><span>Дашборд истории покупок Steam</span></div>
 </a>
 <a href="https://vzvxv.github.io/TV-Show-Tracker/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img9.png" alt="TV Show Tracker" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img9.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img9.png" alt="TV Show Tracker" class="card-image">
 <div class="card-content"><b>TV Show Tracker</b><span>Отслеживание просмотренных сезонов</span></div>
 </a>
 <a href="https://vzvxv.github.io/R.E.P.O.Bestiary/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img2.png" alt="R.E.P.O.Bestiary" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img2.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img2.png" alt="R.E.P.O.Bestiary" class="card-image">
 <div class="card-content"><b>R.E.P.O.Bestiary</b><span>R.E.P.O. Бестиарий</span></div>
 </a>
 <a href="https://vzvxv.github.io/Steam-License-Pro/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img17.png" alt="Steam License Pro" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img17.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img17.png" alt="Steam License Pro" class="card-image">
 <div class="card-content"><b>Steam License Pro</b><span>Дашборд лицензий Steam</span></div>
 </a>
 <a href="https://vzvxv.github.io/Steam-Roulette/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img18.png" alt="Steam Roulette" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img18.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img18.png" alt="Steam Roulette" class="card-image">
 <div class="card-content"><b>Steam Roulette</b><span>Когда не знаешь во что сыграть</span></div>
 </a>
 <a href="https://github.com/vZVXv/ZVX-DSD" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img19.png" alt="ZVX-DSD" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img19.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img19.png" alt="ZVX-DSD" class="card-image">
 <div class="card-content"><b>ZVX-DSD</b><span>Виджет затемнения сайтов.</span></div>
 </a>
 </nav>
@@ -144,27 +176,27 @@ canvas { display: block; margin: 0 auto; }
 <h2 class="section-title">Русификаторы</h2>
 <nav class="card-grid">
 <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2272628653" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img11.jpg" alt="VTOL VR" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img11.jpg" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img11.jpg" alt="VTOL VR" class="card-image">
 <div class="card-content"><b>VTOL VR</b><span>Перевод игры на Русский язык</span></div>
 </a>
 <a href="https://www.nexusmods.com/bladeandsorcery/mods/10232" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img112.png" alt="Blade & Sorcery" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img1.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img112.png" alt="Blade & Sorcery" class="card-image">
 <div class="card-content"><b>Blade & Sorcery</b><span>Перевод игры на Русский язык</span></div>
 </a>
 <a href="https://www.nexusmods.com/repo/mods/262" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img13.png" alt="R.E.P.O." class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img13.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img13.png" alt="R.E.P.O." class="card-image">
 <div class="card-content"><b>R.E.P.O.</b><span>Перевод игры на Русский язык</span></div>
 </a>
 <a href="https://www.nexusmods.com/demeo/mods/2" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img20.png" alt="DEMEO" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img20.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img20.png" alt="DEMEO" class="card-image">
 <div class="card-content"><b>Demeo</b><span>Перевод игры на Русский язык</span></div>
 </a>
 <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3791325362" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img23.png" alt="DEMEO" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img4.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img23.png" alt="DEMEO" class="card-image">
 <div class="card-content"><b>Stacklands</b><span>Перевод игры на Русский язык</span></div>
 </a>
 <a href="https://boosty.to/zvx/posts/5e0d764f-ac33-423d-aed0-c39a23b969ae?share=success_publish_link" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img24.png" alt="DEMEO" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img12.png" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img24.png" alt="DEMEO" class="card-image">
 <div class="card-content"><b>Stackmon</b><span>Перевод игры на Русский язык</span></div>
 </a>
 </nav>
@@ -173,31 +205,31 @@ canvas { display: block; margin: 0 auto; }
 <h2 class="section-title">Связи & Ресурсы</h2>
 <nav class="card-grid">
 <a href="https://vzvxv.itch.io/whitepixel" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img10.jpg" alt="Itch.io" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img10.jpg" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img10.jpg" alt="Itch.io" class="card-image">
 <div class="card-content"><b>WhitePixel on Itch.io</b><span>Игра для Anbernic 28xx/35xx/40xx</span></div>
 </a>
 <a href="https://shikimori.io/ZVX" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img6.jpg" alt="Shikimori" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img6.jpg" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img6.jpg" alt="Shikimori" class="card-image">
 <div class="card-content"><b>Shikimori</b><span>Мой аниме-список</span></div>
 </a>
 <a href="https://myanimelist.net/profile/vZVXv" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img16.jpg" alt="MyAnimeList" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img16.jpg" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img16.jpg" alt="MyAnimeList" class="card-image">
 <div class="card-content"><b>MyAnimeList</b><span>Международный профиль аниме</span></div>
 </a>
 <a href="https://steamcommunity.com/id/vZVXv" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img5.jpg" alt="Steam" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img5.jpg" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img5.jpg" alt="Steam" class="card-image">
 <div class="card-content"><b>Steam Profile</b><span>Игровой профиль и статистика</span></div>
 </a>
 <a href="https://boosty.to/zvx" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img21.jpg" alt="boosty" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img21.jpg" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img21.jpg" alt="boosty" class="card-image">
 <div class="card-content"><b>boosty</b><span>На кофе с булочкой</span></div>
 </a>
 <a href="https://steamcommunity.com/id/vZVXv/myworkshopfiles/?p=1&numperpage=30" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img14.jpg" alt="Steam Workshop" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img14.jpg" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img14.jpg" alt="Steam Workshop" class="card-image">
 <div class="card-content"><b>Мастерская Steam</b><span>Коллекция созданных модификаций</span></div>
 </a>
 <a href="https://www.nexusmods.com/profile/vZVXv/mods" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img15.jpg" alt="NexusMods" class="card-image">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img15.jpg" data-rkn="RKN_https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img15.jpg" alt="NexusMods" class="card-image">
 <div class="card-content"><b>NexusMods</b><span>Опубликованные моды на портале</span></div>
 </a>
 </nav>
@@ -205,7 +237,7 @@ canvas { display: block; margin: 0 auto; }
 <section class="panel">
 <h2 class="section-title">Аутентификация</h2>
 <a href="https://mynickname.com/vZVXv" target="_blank" rel="noopener noreferrer">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img.jpg" alt="Сертификат vzvxv" class="certificate-img">
+<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/a4qK0XZf_bgdOffEx9iq6SHHY1_x9rzRYL4uEBEEfHugSPp7Qhx6PoJdNcfvRIr1VEIGee7OvPayoCjJSJpRF5ad8Lg6bVc1ZkQdYP0EQfQH8MmJ62cShWaDODwL8Buy7ROA1OIxf2Du/img.jpg" alt="Сертификат vzvxv" class="certificate-img">
 </a>
 </section>
 <footer class="panel">
@@ -229,6 +261,33 @@ canvas { display: block; margin: 0 auto; }
 </footer>
 </main>
 <script>
+// === Логика кнопки "Я♥РКН" ===
+const rknToggleBtn = document.getElementById('rknToggle');
+let isRknActive = false;
+
+function applyRKNState(state) {
+    isRknActive = state;
+    rknToggleBtn.classList.toggle('active', isRknActive);
+    
+    document.querySelectorAll('img[data-rkn]').forEach(img => {
+        // Сохраняем оригинальную ссылку при первом проходе, если её еще нет
+        if (!img.dataset.original) {
+            img.dataset.original = img.src; 
+        }
+        // Меняем источник изображения в зависимости от состояния
+        img.src = isRknActive ? img.dataset.rkn : img.dataset.original;
+    });
+}
+
+rknToggleBtn.addEventListener('click', () => applyRKNState(!isRknActive));
+
+// Автоматическая активация при запуске с телефона
+if (window.innerWidth <= 900 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    applyRKNState(true);
+}
+// ===============================
+
+
 const container = document.getElementById('scroll-box');
 const navDots = document.querySelectorAll('.nav-dot');
 let isDesktop = window.innerWidth > 900;
