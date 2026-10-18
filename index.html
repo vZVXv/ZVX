@@ -55,7 +55,6 @@ body, html {
   text-shadow: 0 0 10px rgba(0,0,0,0.8);
 }
 
-/* Явно задаем 4 колонки для размещения до 12 плиток (4х3) */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -125,7 +124,6 @@ canvas { display: block; margin: 0 auto; }
 .rkn-toggle-btn:hover { background: rgba(255, 0, 85, 0.2); }
 .rkn-toggle-btn.active { background: #ff0055; color: #fff; box-shadow: 0 0 15px rgba(255, 0, 85, 0.5); }
 
-/* Адаптив для средних и маленьких экранов */
 @media (max-width: 1024px) {
   .card-grid { grid-template-columns: repeat(3, 1fr); }
 }
@@ -306,15 +304,19 @@ canvas { display: block; margin: 0 auto; }
 </main>
 
 <script>
-// === Логика анимации живых обоев ===
+
 const wpCanvas = document.getElementById('wallpaperCanvas');
 const wpCtx = wpCanvas.getContext('2d');
-let wpWidth, wpHeight, stars = [];
+const container = document.getElementById('scroll-box');
+
+let wpWidth, wpHeight, stars = [], clouds = [];
+let scrollProgress = 0; // От 0.0 (Профиль) до 1.0 (Терминал)
 
 function resizeWpCanvas() {
     wpWidth = wpCanvas.width = window.innerWidth;
     wpHeight = wpCanvas.height = window.innerHeight;
     initStars();
+    initClouds();
 }
 
 function initStars() {
@@ -331,46 +333,205 @@ function initStars() {
     }
 }
 
+function initClouds() {
+    clouds = [];
+    for (let i = 0; i < 7; i++) {
+        clouds.push({
+            x: Math.random() * wpWidth,
+            y: Math.random() * (wpHeight * 0.4) + 20,
+            scale: Math.random() * 0.7 + 0.5,
+            speed: Math.random() * 0.15 + 0.05
+        });
+    }
+}
+
+function lerpColor(color1, color2, factor) {
+    let c1 = parseInt(color1.slice(1), 16);
+    let c2 = parseInt(color2.slice(1), 16);
+    
+    let r1 = (c1 >> 16) & 0xff, g1 = (c1 >> 8) & 0xff, b1 = c1 & 0xff;
+    let r2 = (c2 >> 16) & 0xff, g2 = (c2 >> 8) & 0xff, b2 = c2 & 0xff;
+    
+    let r = Math.round(r1 + factor * (r2 - r1));
+    let g = Math.round(g1 + factor * (g2 - g1));
+    let b = Math.round(b1 + factor * (b2 - b1));
+    
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
+function updateScrollProgress() {
+    let isDesktop = window.innerWidth > 900;
+    if (isDesktop) {
+        const maxScroll = container.scrollWidth - container.clientWidth;
+        scrollProgress = maxScroll > 0 ? container.scrollLeft / maxScroll : 0;
+    } else {
+        const maxScroll = container.scrollHeight - container.clientHeight;
+        scrollProgress = maxScroll > 0 ? container.scrollTop / maxScroll : 0;
+    }
+    scrollProgress = Math.max(0, Math.min(1, scrollProgress));
+}
+
 function drawBackground() {
+    updateScrollProgress();
+
+    // Градиенты неба в зависимости от прокрутки
+    let topColor, midColor, botColor;
+    
+    if (scrollProgress < 0.2) {
+        let f = scrollProgress / 0.2;
+        topColor = lerpColor('#03050c', '#34495e', f);
+        midColor = lerpColor('#0b1329', '#d35400', f);
+        botColor = lerpColor('#1b120c', '#f39c12', f);
+    } else if (scrollProgress < 0.4) {
+        let f = (scrollProgress - 0.2) / 0.2;
+        topColor = lerpColor('#34495e', '#1a5276', f);
+        midColor = lerpColor('#d35400', '#2980b9', f);
+        botColor = lerpColor('#f39c12', '#85c1e9', f);
+    } else if (scrollProgress <= 0.6) {
+        topColor = '#1a5276';
+        midColor = '#2980b9';
+        botColor = '#85c1e9';
+    } else if (scrollProgress < 0.8) {
+        let f = (scrollProgress - 0.6) / 0.2;
+        topColor = lerpColor('#1a5276', '#512e5f', f);
+        midColor = lerpColor('#2980b9', '#e74c3c', f);
+        botColor = lerpColor('#85c1e9', '#f39c12', f);
+    } else {
+        let f = (scrollProgress - 0.8) / 0.2;
+        topColor = lerpColor('#512e5f', '#03050c', f);
+        midColor = lerpColor('#e74c3c', '#0b1329', f);
+        botColor = lerpColor('#f39c12', '#1b120c', f);
+    }
+
     const skyGrad = wpCtx.createLinearGradient(0, 0, 0, wpHeight);
-    skyGrad.addColorStop(0, '#03050c');
-    skyGrad.addColorStop(0.5, '#0b1329');
-    skyGrad.addColorStop(1, '#1b120c');
+    skyGrad.addColorStop(0, topColor);
+    skyGrad.addColorStop(0.5, midColor);
+    skyGrad.addColorStop(1, botColor);
     wpCtx.fillStyle = skyGrad;
     wpCtx.fillRect(0, 0, wpWidth, wpHeight);
 
-    wpCtx.fillStyle = '#ffffff';
-    stars.forEach(star => {
-        star.alpha += star.twinkleSpeed;
-        if (star.alpha > 1 || star.alpha < 0.2) {
-            star.twinkleSpeed *= -1;
-        }
-        wpCtx.globalAlpha = Math.abs(star.alpha);
+    // 1. Звезды
+    let starVisibility = 1 - Math.sin(scrollProgress * Math.PI);
+    starVisibility = Math.max(0, (starVisibility - 0.3) / 0.7);
+    
+    if (starVisibility > 0.05) {
+        wpCtx.fillStyle = '#ffffff';
+        stars.forEach(star => {
+            star.alpha += star.twinkleSpeed;
+            if (star.alpha > 1 || star.alpha < 0.2) {
+                star.twinkleSpeed *= -1;
+            }
+            wpCtx.globalAlpha = Math.abs(star.alpha) * starVisibility;
+            wpCtx.beginPath();
+            wpCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+            wpCtx.fill();
+        });
+        wpCtx.globalAlpha = 1.0;
+    }
+
+    // 2. Луна (Исправленная логика движения)
+    let moonX = 0;
+    let moonY = wpHeight * 0.22;
+    let moonRadius = 38;
+    let moonAlpha = 0;
+
+    if (scrollProgress <= 0.35) {
+        // На профиле луна справа (0.78), при прокрутке уходит вправо за экран
+        let p = scrollProgress / 0.35;
+        moonX = wpWidth * (0.78 + p * 0.6);
+        moonAlpha = Math.max(0, 1 - p * 1.5);
+    } else if (scrollProgress >= 0.65) {
+        // К терминалу луна выплывает слева (-0.2) и останавливается слева (0.22)
+        let p = (scrollProgress - 0.65) / 0.35;
+        moonX = wpWidth * (-0.2 + p * 0.42);
+        moonAlpha = Math.min(1, p * 1.5);
+    }
+
+    if (moonAlpha > 0.01) {
+        wpCtx.globalAlpha = moonAlpha;
+
+        const moonGlow = wpCtx.createRadialGradient(moonX, moonY, moonRadius * 0.5, moonX, moonY, moonRadius * 3.5);
+        moonGlow.addColorStop(0, 'rgba(255, 253, 235, 0.25)');
+        moonGlow.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        wpCtx.fillStyle = moonGlow;
         wpCtx.beginPath();
-        wpCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        wpCtx.arc(moonX, moonY, moonRadius * 3.5, 0, Math.PI * 2);
         wpCtx.fill();
+
+        wpCtx.fillStyle = '#fffee8';
+        wpCtx.beginPath();
+        wpCtx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
+        wpCtx.fill();
+        wpCtx.globalAlpha = 1.0;
+    }
+
+    // 3. Солнце (дневной цикл с восходом и закатом)
+    let sunAlpha = 0;
+    if (scrollProgress >= 0.15 && scrollProgress <= 0.85) {
+        let sunProgress = (scrollProgress - 0.15) / 0.7;
+        if (scrollProgress < 0.3) {
+            sunAlpha = (scrollProgress - 0.15) / 0.15;
+        } else if (scrollProgress > 0.7) {
+            sunAlpha = (0.85 - scrollProgress) / 0.15;
+        } else {
+            sunAlpha = 1.0;
+        }
+
+        let sunX = wpWidth * (0.1 + sunProgress * 0.8);
+        let sunY = wpHeight * 0.6 - Math.sin(sunProgress * Math.PI) * (wpHeight * 0.45);
+        const sunRadius = 45;
+
+        wpCtx.globalAlpha = Math.max(0, sunAlpha);
+
+        const sunGlow = wpCtx.createRadialGradient(sunX, sunY, sunRadius * 0.2, sunX, sunY, sunRadius * 4);
+        sunGlow.addColorStop(0, 'rgba(255, 240, 150, 0.6)');
+        sunGlow.addColorStop(1, 'rgba(255, 160, 50, 0)');
+        wpCtx.fillStyle = sunGlow;
+        wpCtx.beginPath();
+        wpCtx.arc(sunX, sunY, sunRadius * 4, 0, Math.PI * 2);
+        wpCtx.fill();
+
+        wpCtx.fillStyle = '#fff4a3';
+        wpCtx.beginPath();
+        wpCtx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+        wpCtx.fill();
+        wpCtx.globalAlpha = 1.0;
+    }
+
+    // 4. Облака
+    let cloudAlpha = Math.sin(scrollProgress * Math.PI);
+    cloudAlpha = Math.max(0.15, cloudAlpha);
+    
+    wpCtx.globalAlpha = cloudAlpha * 0.85;
+    wpCtx.fillStyle = scrollProgress < 0.2 || scrollProgress > 0.8 ? 'rgba(255, 200, 150, 0.8)' : '#ffffff';
+
+    clouds.forEach(cloud => {
+        cloud.x += cloud.speed;
+        if (cloud.x - 100 > wpWidth) cloud.x = -150;
+
+        drawCloud(cloud.x, cloud.y, cloud.scale);
     });
     wpCtx.globalAlpha = 1.0;
 
-    const moonX = wpWidth * 0.78;
-    const moonY = wpHeight * 0.22;
-    const moonRadius = 40;
-    
-    const moonGlow = wpCtx.createRadialGradient(moonX, moonY, moonRadius * 0.5, moonX, moonY, moonRadius * 3.5);
-    moonGlow.addColorStop(0, 'rgba(255, 253, 235, 0.2)');
-    moonGlow.addColorStop(1, 'rgba(255, 255, 255, 0)');
-    wpCtx.fillStyle = moonGlow;
-    wpCtx.beginPath();
-    wpCtx.arc(moonX, moonY, moonRadius * 3.5, 0, Math.PI * 2);
-    wpCtx.fill();
+    // 5. Лес
+    let forestFactor = Math.sin(scrollProgress * Math.PI);
+    const forestColor1 = lerpColor('#080d1a', '#1e3f20', forestFactor);
+    const forestColor2 = lerpColor('#03060c', '#0f2211', forestFactor);
 
-    wpCtx.fillStyle = '#fffee8';
-    wpCtx.beginPath();
-    wpCtx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
-    wpCtx.fill();
+    drawPineForest(wpHeight * 0.68, 0.08, forestColor1);
+    drawPineForest(wpHeight * 0.78, 0.14, forestColor2);
+}
 
-    drawPineForest(wpHeight * 0.68, 0.08, '#080d1a');
-    drawPineForest(wpHeight * 0.78, 0.14, '#03060c');
+function drawCloud(x, y, scale) {
+    wpCtx.beginPath();
+    wpCtx.arc(x, y, 25 * scale, Math.PI * 0.5, Math.PI * 1.5);
+    wpCtx.arc(x + 25 * scale, y - 20 * scale, 30 * scale, Math.PI * 1.0, Math.PI * 1.85);
+    wpCtx.arc(x + 60 * scale, y - 15 * scale, 25 * scale, Math.PI * 1.37, Math.PI * 1.91);
+    wpCtx.arc(x + 85 * scale, y, 20 * scale, Math.PI * 1.5, Math.PI * 0.5);
+    wpCtx.moveTo(x + 85 * scale, y + 25 * scale);
+    wpCtx.lineTo(x, y + 25 * scale);
+    wpCtx.closePath();
+    wpCtx.fill();
 }
 
 function drawPineForest(baseY, density, color) {
@@ -435,7 +596,6 @@ if (window.innerWidth <= 900 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMob
 }
 
 // === Управление прокруткой и навигацией ===
-const container = document.getElementById('scroll-box');
 const navDots = document.querySelectorAll('.nav-dot');
 let isDesktop = window.innerWidth > 900;
 let isScrolling = false;
