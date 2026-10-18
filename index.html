@@ -264,7 +264,7 @@ canvas { display: block; margin: 0 auto; }
         <div class="card-content"><b>boosty</b><span>На кофе с булочкой</span></div>
       </a>
       <a href="https://steamcommunity.com/id/vZVXv/myworkshopfiles/?p=1&numperpage=30" class="card" target="_blank">
-        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img14.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/VavegBUf2hveB-F9c3Tit6swnReBcw09rzpnzHtrf5shYMrCLYb4A46Qd_wu6EPnaEv72fxAMot22QvhIaM2jgWkYMPtY4kdYyEppr0yRWEtwFxZi9CIsvLGtzXcJvDflZjgmwlOa8VT/img14.jpg" alt="Steam Workshop" class="card-image">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img14.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/VavegBUf2hveB-F9c3Tit6swnReBcw09rzpnzHtrf5shYMrCLYb4A46Qd_wu6EPnaEv72fxAMot22QvhIaM2jgWkYMPtY4kdYyEppr0yRWEtwFxZi9CIsvLGtzXcJvDflZjgmwlOa8VT/img14.jpg" alt="Мастерская Steam" class="card-image">
         <div class="card-content"><b>Мастерская Steam</b><span>Коллекция созданных модификаций</span></div>
       </a>
       <a href="https://www.nexusmods.com/profile/vZVXv/mods" class="card" target="_blank">
@@ -304,7 +304,7 @@ canvas { display: block; margin: 0 auto; }
 </main>
 
 <script>
-
+// === Логика анимации живых обоев ===
 const wpCanvas = document.getElementById('wallpaperCanvas');
 const wpCtx = wpCanvas.getContext('2d');
 const container = document.getElementById('scroll-box');
@@ -374,7 +374,6 @@ function updateScrollProgress() {
 function drawBackground() {
     updateScrollProgress();
 
-    // Градиенты неба в зависимости от прокрутки
     let topColor, midColor, botColor;
     
     if (scrollProgress < 0.2) {
@@ -429,19 +428,17 @@ function drawBackground() {
         wpCtx.globalAlpha = 1.0;
     }
 
-    // 2. Луна (Исправленная логика движения)
+    // 2. Луна
     let moonX = 0;
     let moonY = wpHeight * 0.22;
     let moonRadius = 38;
     let moonAlpha = 0;
 
     if (scrollProgress <= 0.35) {
-        // На профиле луна справа (0.78), при прокрутке уходит вправо за экран
         let p = scrollProgress / 0.35;
         moonX = wpWidth * (0.78 + p * 0.6);
         moonAlpha = Math.max(0, 1 - p * 1.5);
     } else if (scrollProgress >= 0.65) {
-        // К терминалу луна выплывает слева (-0.2) и останавливается слева (0.22)
         let p = (scrollProgress - 0.65) / 0.35;
         moonX = wpWidth * (-0.2 + p * 0.42);
         moonAlpha = Math.min(1, p * 1.5);
@@ -462,10 +459,33 @@ function drawBackground() {
         wpCtx.beginPath();
         wpCtx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
         wpCtx.fill();
+
+        // Отрисовка темных и четких кратеров на Луне
+        wpCtx.save();
+        wpCtx.beginPath();
+        wpCtx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
+        wpCtx.clip();
+
+        wpCtx.fillStyle = 'rgba(135, 130, 110, 0.75)';
+        const craters = [
+            { x: -0.35, y: -0.2, r: 9 },
+            { x: 0.3, y: 0.3, r: 7 },
+            { x: -0.15, y: 0.4, r: 5 },
+            { x: 0.45, y: -0.25, r: 5 },
+            { x: 0.05, y: -0.15, r: 8 },
+            { x: -0.2, y: 0.05, r: 4 }
+        ];
+        craters.forEach(c => {
+            wpCtx.beginPath();
+            wpCtx.arc(moonX + c.x * moonRadius, moonY + c.y * moonRadius, c.r, 0, Math.PI * 2);
+            wpCtx.fill();
+        });
+        wpCtx.restore();
+
         wpCtx.globalAlpha = 1.0;
     }
 
-    // 3. Солнце (дневной цикл с восходом и закатом)
+    // 3. Солнце
     let sunAlpha = 0;
     if (scrollProgress >= 0.15 && scrollProgress <= 0.85) {
         let sunProgress = (scrollProgress - 0.15) / 0.7;
@@ -498,12 +518,21 @@ function drawBackground() {
         wpCtx.globalAlpha = 1.0;
     }
 
-    // 4. Облака
-    let cloudAlpha = Math.sin(scrollProgress * Math.PI);
-    cloudAlpha = Math.max(0.15, cloudAlpha);
+    // 4. Облака 
+    let sinFactor = Math.sin(scrollProgress * Math.PI);
+    let cloudAlpha = 0.35 + 0.55 * (sinFactor * sinFactor);
     
-    wpCtx.globalAlpha = cloudAlpha * 0.85;
-    wpCtx.fillStyle = scrollProgress < 0.2 || scrollProgress > 0.8 ? 'rgba(255, 200, 150, 0.8)' : '#ffffff';
+    let cloudColor = '#ffffff';
+    if (scrollProgress < 0.2 || scrollProgress > 0.8) {
+        cloudColor = 'rgba(145, 160, 190, 0.85)'; 
+    } else if ((scrollProgress >= 0.15 && scrollProgress < 0.35) || (scrollProgress > 0.65 && scrollProgress <= 0.85)) {
+        cloudColor = 'rgba(255, 210, 170, 0.9)'; // Теплые облака рассвета/заката
+    } else {
+        cloudColor = '#ffffff'; // Дневные облака
+    }
+
+    wpCtx.globalAlpha = cloudAlpha;
+    wpCtx.fillStyle = cloudColor;
 
     clouds.forEach(cloud => {
         cloud.x += cloud.speed;
@@ -513,7 +542,7 @@ function drawBackground() {
     });
     wpCtx.globalAlpha = 1.0;
 
-    // 5. Лес
+    // 5. Лес (Передний план)
     let forestFactor = Math.sin(scrollProgress * Math.PI);
     const forestColor1 = lerpColor('#080d1a', '#1e3f20', forestFactor);
     const forestColor2 = lerpColor('#03060c', '#0f2211', forestFactor);
