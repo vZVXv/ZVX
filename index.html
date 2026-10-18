@@ -5,266 +5,402 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>vZVXv | Portfolio</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Source+Sans+Pro:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Source+Sans+Pro:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap');
+
 :root {
---bg: #090a0f;
---panel-bg: rgba(20, 22, 30, 0.6);
---text: #c0c5ce;
---title: #ffffff;
---accent: #00e5ff;
+  --bg: transparent;
+  --panel-bg: rgba(10, 15, 26, 0.7);
+  --text: #c0c5ce;
+  --title: #ffffff;
+  --accent: #00e5ff;
 }
+
 body, html {
-margin: 0; padding: 0; width: 100%; height: 100%;
-background-color: var(--bg); color: var(--text);
-font-family: 'Montserrat', sans-serif; overflow: hidden;
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  background-color: #03050c; color: var(--text);
+  font-family: 'Montserrat', sans-serif; overflow: hidden;
+  user-select: none;
 }
+
+/* Canvas фона */
+#wallpaperCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .main-container {
-display: flex; width: 100vw; height: 100vh;
-overflow-x: scroll; overflow-y: hidden;
-scroll-snap-type: x mandatory; scroll-behavior: smooth;
-scrollbar-width: none;
+  position: relative;
+  z-index: 1;
+  display: flex; width: 100vw; height: 100vh;
+  overflow-x: scroll; overflow-y: hidden;
+  scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  scrollbar-width: none;
 }
 .main-container::-webkit-scrollbar { display: none; }
+
 .panel {
-flex: 0 0 100vw; width: 100vw; height: 100vh;
-scroll-snap-align: center; display: flex;
-flex-direction: column; align-items: center; justify-content: center;
-padding: 60px 5vw 100px; box-sizing: border-box; overflow-y: auto;
+  flex: 0 0 100vw; width: 100vw; height: 100vh;
+  scroll-snap-align: center; display: flex;
+  flex-direction: column; align-items: center; justify-content: center;
+  padding: 30px 4vw 70px; box-sizing: border-box; overflow-y: auto;
 }
 .panel::-webkit-scrollbar { width: 0; }
+
 .section-title {
-font-size: 2rem; color: var(--title); margin-bottom: 40px;
-text-transform: uppercase; letter-spacing: 2px; text-align: center;
+  font-size: 1.6rem; color: var(--title); margin-bottom: 20px; margin-top: 0;
+  text-transform: uppercase; letter-spacing: 2px; text-align: center;
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
 }
+
+/* Явно задаем 4 колонки для размещения до 12 плиток (4х3) */
 .card-grid {
-display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-gap: 20px; width: 100%; max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px; width: 100%; max-width: 1100px;
 }
+
 .card {
-background: var(--panel-bg); border-radius: 16px;
-border: 1px solid rgba(255,255,255,0.05); overflow: hidden;
-text-decoration: none; transition: 0.3s; backdrop-filter: blur(10px);
+  background: var(--panel-bg); border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08); overflow: hidden;
+  text-decoration: none; transition: 0.3s; backdrop-filter: blur(12px);
+  display: flex; flex-direction: column;
 }
-.card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,229,255,0.1); }
-.card-image { width: 100%; height: 150px; object-fit: cover; transition: opacity 0.3s ease; }
-.card-content { padding: 20px; }
-.card-content b { color: var(--title); display: block; font-size: 1.1rem; margin-bottom: 10px; }
-.card-content span { font-size: 0.85rem; color: var(--text); }
+.card:hover { 
+  transform: translateY(-4px); 
+  border-color: var(--accent); 
+  box-shadow: 0 8px 20px rgba(0,229,255,0.2); 
+}
+
+.card-image { 
+  width: 100%; height: 110px; 
+  object-fit: cover; transition: opacity 0.3s ease; 
+}
+.card-content { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+.card-content b { color: var(--title); display: block; font-size: 0.95rem; margin-bottom: 4px; line-height: 1.2; }
+.card-content span { font-size: 0.78rem; color: var(--text); opacity: 0.85; line-height: 1.2; }
+
 .cyber-nav {
-position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-display: flex; gap: 10px; background: rgba(10, 12, 16, 0.8);
-padding: 10px 20px; border-radius: 50px; z-index: 1000;
-border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(15px);
+  position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; background: rgba(5, 8, 20, 0.85);
+  padding: 8px 16px; border-radius: 50px; z-index: 1000;
+  border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(15px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 .nav-dot {
-background: transparent; border: none; color: #888;
-padding: 10px 15px; border-radius: 30px; cursor: pointer;
-font-family: inherit; font-weight: 700; font-size: 0.8rem; transition: 0.3s;
+  background: transparent; border: none; color: #888;
+  padding: 8px 14px; border-radius: 30px; cursor: pointer;
+  font-family: inherit; font-weight: 700; font-size: 0.75rem; transition: 0.3s;
 }
-.nav-dot:hover { color: var(--title); background: rgba(255,255,255,0.05); }
-.nav-dot.active { color: var(--bg); background: var(--accent); }
+.nav-dot:hover { color: var(--title); background: rgba(255,255,255,0.08); }
+.nav-dot.active { color: #03050c; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
 .btn-profile { display: flex; flex-direction: column; align-items: center; text-decoration: none; }
-.profile-avatar { width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; margin-bottom: 20px; transition: 0.3s; }
-.btn-profile:hover .profile-avatar { transform: scale(1.05); box-shadow: 0 0 20px rgba(0,229,255,0.3); }
-.btn-profile b { font-size: 2rem; color: var(--title); }
-.btn-profile span { font-size: 1rem; color: var(--text); margin-top: 5px; }
-.clock-widget { font-size: 1.2rem; font-family: monospace; color: var(--accent); margin-bottom: 30px; letter-spacing: 2px; }
-.certificate-img { max-width: 90%; max-height: 60vh; border-radius: 12px; border: 2px solid rgba(255,255,255,0.1); transition: opacity 0.3s ease, border-color 0.3s ease; }
+.profile-avatar { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; margin-bottom: 14px; transition: 0.3s; box-shadow: 0 0 15px rgba(0,229,255,0.2); }
+.btn-profile:hover .profile-avatar { transform: scale(1.05); box-shadow: 0 0 25px rgba(0,229,255,0.4); }
+.btn-profile b { font-size: 1.8rem; color: var(--title); }
+.btn-profile span { font-size: 0.95rem; color: var(--text); margin-top: 4px; }
+.clock-widget { font-size: 1.2rem; font-family: monospace; color: var(--accent); margin-bottom: 18px; letter-spacing: 2px; }
+
+.certificate-img { max-width: 90%; max-height: 55vh; border-radius: 12px; border: 2px solid rgba(255,255,255,0.1); transition: opacity 0.3s ease, border-color 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 .certificate-img:hover { border-color: var(--accent); }
-#game-container { position: relative; background: #000; border-radius: 12px; overflow: hidden; border: 2px solid rgba(255,255,255,0.1); width: 280px; margin: 0 auto; }
+
+#game-container { position: relative; background: #000; border-radius: 12px; overflow: hidden; border: 2px solid rgba(255,255,255,0.1); width: 280px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
 .game-info { display: flex; justify-content: space-between; padding: 10px 15px; background: #111; font-family: monospace; font-size: 0.9rem; color: var(--accent); }
 .btn-game { padding: 10px 20px; background: transparent; border: 2px solid var(--accent); color: var(--accent); font-family: 'Montserrat'; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
 .btn-game:hover { background: var(--accent); color: #000; }
-.overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
+.overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
 canvas { display: block; margin: 0 auto; }
-.footer-text { margin-top: 20px; font-size: 0.8rem; color: #555; font-family: monospace; }
+.footer-text { margin-top: 15px; font-size: 0.8rem; color: #777; font-family: monospace; }
 
-/* Стили для кнопки RKN */
 .rkn-toggle-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 2000;
-    background: rgba(10, 12, 16, 0.8);
-    border: 2px solid #ff0055;
-    color: #ff0055;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    font-size: 0.9rem;
-    transition: 0.3s;
-    backdrop-filter: blur(10px);
+  position: fixed; top: 20px; right: 20px; z-index: 2000;
+  background: rgba(10, 12, 16, 0.85); border: 2px solid #ff0055;
+  color: #ff0055; padding: 8px 14px; border-radius: 8px; cursor: pointer;
+  font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 0.85rem;
+  transition: 0.3s; backdrop-filter: blur(10px);
 }
-.rkn-toggle-btn:hover {
-    background: rgba(255, 0, 85, 0.1);
-}
-.rkn-toggle-btn.active {
-    background: #ff0055;
-    color: #fff;
-    box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+.rkn-toggle-btn:hover { background: rgba(255, 0, 85, 0.2); }
+.rkn-toggle-btn.active { background: #ff0055; color: #fff; box-shadow: 0 0 15px rgba(255, 0, 85, 0.5); }
+
+/* Адаптив для средних и маленьких экранов */
+@media (max-width: 1024px) {
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-@media (max-width: 900px) {
-  .panel { padding: 40px 5vw 120px; height: auto; min-height: 100vh; overflow-y: visible; scroll-snap-align: start; flex: 0 0 auto; width: 100%; }
+@media (max-width: 768px) {
+  .card-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .card-image { height: 95px; }
+  .panel { padding: 25px 4vw 100px; height: auto; min-height: 100vh; overflow-y: visible; scroll-snap-align: start; flex: 0 0 auto; width: 100%; }
   .main-container { overflow-y: auto; overflow-x: hidden; scroll-snap-type: y mandatory; flex-direction: column; }
-  .cyber-nav { flex-wrap: wrap; justify-content: center; width: 90%; border-radius: 20px; }
-  .rkn-toggle-btn { top: 10px; right: 10px; padding: 8px 12px; font-size: 0.8rem; }
+  .cyber-nav { flex-wrap: wrap; justify-content: center; width: 92%; border-radius: 20px; bottom: 12px; }
+  .rkn-toggle-btn { top: 10px; right: 10px; padding: 6px 10px; font-size: 0.75rem; }
+}
+
+@media (max-width: 480px) {
+  .card-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
+<canvas id="wallpaperCanvas"></canvas>
+
 <button id="rknToggle" class="rkn-toggle-btn">Я♥РКН</button>
 
 <div class="cyber-nav">
-<button class="nav-dot active" data-index="0">ПРОФИЛЬ</button>
-<button class="nav-dot" data-index="1">ПРОЕКТЫ</button>
-<button class="nav-dot" data-index="2">ЛОКАЛИЗАЦИИ</button>
-<button class="nav-dot" data-index="3">РЕСУРСЫ</button>
-<button class="nav-dot" data-index="4">СЕРТИФИКАТ</button>
-<button class="nav-dot" data-index="5">ТЕРМИНАЛ</button>
+  <button class="nav-dot active" data-index="0">ПРОФИЛЬ</button>
+  <button class="nav-dot" data-index="1">ПРОЕКТЫ</button>
+  <button class="nav-dot" data-index="2">ЛОКАЛИЗАЦИИ</button>
+  <button class="nav-dot" data-index="3">РЕСУРСЫ</button>
+  <button class="nav-dot" data-index="4">СЕРТИФИКАТ</button>
+  <button class="nav-dot" data-index="5">ТЕРМИНАЛ</button>
 </div>
+
 <main class="main-container" id="scroll-box">
-<header class="panel">
-<div class="clock-widget" id="clock">00:00:00</div>
-<a href="https://github.com/vZVXv?tab=repositories" class="btn-profile" target="_blank" rel="noopener noreferrer">
-<img src="https://avatars.githubusercontent.com/u/89864184?v=4" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/rmkgClYS39gNOSE6p5VBvYC-fXsKzN18kTFVfBkFw46xEq7aczD7Cy58ubrecI2VLEe2MeoeBD2sa5hp_B-3SSQl-XnzkEt5bIHPA8SMh2ujygSK6QCCHR1r6ggMiuTVqnuKzDRybxrK/ZVX.png" alt="Аватар vZVXv" class="profile-avatar">
-<b>vZVXv</b>
-<span>Developer & Gamer</span>
-</a>
-</header>
-<section class="panel">
-<h2 class="section-title">GitHub проекты</h2>
-<nav class="card-grid">
-<a href="https://vzvxv.github.io/ZVX-and-AI-PING-PONG" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img3.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/fS58mtLvIMJiX8snB9ap31FG3CeCxayUMAUxkFjEVpzx2vByz4yHJebrm6O-FFi_5U-f_8UIhx0LYDY9Eqod_PtXv1a1bzFWzy9dU6ZYfY6M-cHrbZDy-Ky3_9DDPFfJC5ocwmtvuHAM/img3.png" alt="AI PING PONG" class="card-image">
-<div class="card-content"><b>AI PING PONG</b><span>Классическая игра созданная ИИ</span></div>
-</a>
-<a href="https://vzvxv.github.io/ZVX-CASINO/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img8.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/_sxQxyWu5R--L6fSj3f-pcvwWzyZqH7Ch6XmrHnwa7TrA3kgUvhaPIMvfaIuWHQwiTovMCfgzfFTMSwcNwMh54OoH-jsv18-TJ31v999_UlqonVSQwaf0DqPJinmxPSnHRwvPpXqST-U/img8.png" alt="ZVX CASINO" class="card-image">
-<div class="card-content"><b>ZVX CASINO</b><span>Казино с элементами выживания</span></div>
-</a>
-<a href="https://vzvxv.github.io/Steam-Finance-Pro/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img7.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/K9z9Q5zeKP2bXqEf7AaZcG3nPYqNnvykmcHDS9HA8we0Qtr9B-LQ0n6Su3xhC7GpW_Sx6f0jTCBVnq8yw_sZylZjRTkRRoDr7o6hjhJ2q3w5CE0slgyGU1x4YVGFWAa_fQk_rNzG4Mtv/img7.png" alt="Steam Finance Pro" class="card-image">
-<div class="card-content"><b>Steam Finance Pro</b><span>Дашборд истории покупок Steam</span></div>
-</a>
-<a href="https://vzvxv.github.io/TV-Show-Tracker/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img9.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/q0m2Xp6BvObZjDtm-L-j7nanqcvLy4CHBmCSSAssfIUkyNcxGimcIY-Knerfn9332qfsZneld795LTOA4Phv2dEDpFPkrQyPda5__pRlUEoLvestMzzBxAc9ctTwh2UizhbFYhEzK-G6/img9.png" alt="TV Show Tracker" class="card-image">
-<div class="card-content"><b>TV Show Tracker</b><span>Отслеживание просмотренных сезонов</span></div>
-</a>
-<a href="https://vzvxv.github.io/R.E.P.O.Bestiary/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img2.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/FAceflfBY7eXF1AOkcEPZypG8QqmFS2SZiYrXshL_qlhHaeaAQq58LaIVAk2eom4l_jIGzWMc-aeXt-StnXSS2WTvQSzTcWeLpXi9-u7S-g65YBxkNrVkcUlOkUxijca-SLCkntturcn/img2.png" alt="R.E.P.O.Bestiary" class="card-image">
-<div class="card-content"><b>R.E.P.O.Bestiary</b><span>R.E.P.O. Бестиарий</span></div>
-</a>
-<a href="https://vzvxv.github.io/Steam-License-Pro/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img17.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/pH_19igDnGV_-9scQUmScSLcYOPpcGvmvqCjix-Yr7jzFNYm8ORbtKltlw6lVYIQ4rg816ecEl9noJ7hy9xrvikNsQ4pYZmV5iF1OGM7ZcXMxfhgDVqPrabv5FV6R1I35Ih4TCTkYrbn/img17.png" alt="Steam License Pro" class="card-image">
-<div class="card-content"><b>Steam License Pro</b><span>Дашборд лицензий Steam</span></div>
-</a>
-<a href="https://vzvxv.github.io/Steam-Roulette/" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img18.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/ZgDYlUIrdXbLtnQlcYT9vex8Jb6wEIME3Ri2UFf4Bs4mQ1IxhR4qpye_VDfjFEWtKERQnbPTwlF-WztRy-4XcLion1ulvazgYwNODPH2fgtfDikpMnYtZOEsPeWMas4X4Jkk9DRRy9CX/img18.png" alt="Steam Roulette" class="card-image">
-<div class="card-content"><b>Steam Roulette</b><span>Когда не знаешь во что сыграть</span></div>
-</a>
-<a href="https://github.com/vZVXv/ZVX-DSD" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img19.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/NajcQoIMKt295CujEcGFd7isjrPAMeryhIWUmtyQQpFFfBkB8LkCzZ9_aQXaPJG9lrAGWCk6F1QsvJE_Ylm3Bu1q31V1Caq-wGdO4lFF-Sssyk4udFZCS-6hwQ9wS7s8KKuK-odSDk1c/img19.png" alt="ZVX-DSD" class="card-image">
-<div class="card-content"><b>ZVX-DSD</b><span>Виджет затемнения сайтов.</span></div>
-</a>
-<a href="https://github.com/vZVXv/DMT" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img22.jpg" data-rkn="" alt="DMT" class="card-image">
-<div class="card-content"><b>DMT - Discord Message Translator</b><span>Переводчик сообщений в Discord</span></div>
-</a>
-</nav>
-</section>
-<section class="panel">
-<h2 class="section-title">Русификаторы</h2>
-<nav class="card-grid">
-<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2272628653" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img11.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/9WdCCJG9Dt04B5jP3_1eU8vmWLLNbl-_FL3HT2NpQOtPiY_vLOR7JYgtXfT91mQChz4115Mr2N-_wX_mYjLLF_5m7XKYpgqr4FkhZfCP88MVN8U-gPRflwv1JRyaFRIDwrFN2Lza79Tb/img11.jpg" alt="VTOL VR" class="card-image">
-<div class="card-content"><b>VTOL VR</b><span>Перевод игры на Русский язык</span></div>
-</a>
-<a href="https://www.nexusmods.com/bladeandsorcery/mods/10232" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img1.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/ssd7Jj4N6YFAnCZAkn3RGKm_ifNnrUqh4UzdKDKKepLzXVwNZY-m_LdCk6doxV9xcDDrSQmB0SK8d0OcaPAqhn4o0RZiM8g6gZGdSOrDjV4cCygLfYxzO2n2YHONMMNEr1DR7uVzyYh7/img1.png" alt="Blade & Sorcery" class="card-image">
-<div class="card-content"><b>Blade & Sorcery</b><span>Перевод игры на Русский язык</span></div>
-</a>
-<a href="https://www.nexusmods.com/repo/mods/262" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img13.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/qNRoD1vzoF6hwHhJujVXftIX9fTHYCL7_8DEwiJmcbFnhvsfHNMq8lN8fF3V4EUH9QYDv0Rw_8PeO8K9N0zvCXw0U1Y0cKAeCRuoX2AmTjbigNyMlMRrIiGVc0SD-4AGZfOWXh6m9wh4/img13.png" alt="R.E.P.O." class="card-image">
-<div class="card-content"><b>R.E.P.O.</b><span>Перевод игры на Русский язык</span></div>
-</a>
-<a href="https://www.nexusmods.com/demeo/mods/2" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img20.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/8ddd84tzXIogYor8ybPCePmyDyE6vi9HwVnaIEFT8sU5tp5Zs4e6APiaCMt9ifgAJZM3KsWVg09UIFqCRx2Z1gmt7n0sKJZiz6QudbXAt2kPkVkTgm5Kf0_3INVZwS_rbM76CH9VGPih/img20.png" alt="DEMEO" class="card-image">
-<div class="card-content"><b>Demeo</b><span>Перевод игры на Русский язык</span></div>
-</a>
-<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3791325362" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img4.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/UPMOJikgaj6S9I99sD9BvN2cDbxImaccMcn6k-t2zkzPYYCBLEE1roGp_Cpyc1fdytm6kzBewnAhUT4ae0LaQZWULc_cKe0vzKtZROMcKEF96YLch5rbHcXKgPqIUYNsVOhdCLmVwYVt/img4.png" alt="Stacklands" class="card-image">
-<div class="card-content"><b>Stacklands</b><span>Перевод игры на Русский язык</span></div>
-</a>
-<a href="https://boosty.to/zvx/posts/5e0d764f-ac33-423d-aed0-c39a23b969ae?share=success_publish_link" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img12.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/pIz7GiDkDQjkY9j-y-I1sNt2kQD8diApWevNf1bTIupRUXmeoq6izNTCohe_0c8VHn_S2cZX7SEGkdtcOVgBrv6gmFSsnCVIOJjr9D2l_5fYdGfumtf30jwWhflBJA4tKntbJoAHov0U/img12.png" alt="Stackmon" class="card-image">
-<div class="card-content"><b>Stackmon</b><span>Перевод игры на Русский язык</span></div>
-</a>
-</nav>
-</section>
-<section class="panel">
-<h2 class="section-title">Связи & Ресурсы</h2>
-<nav class="card-grid">
-<a href="https://vzvxv.itch.io/whitepixel" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img10.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/DqaQp2Gt1Mz5abmEEz8srVmqDiR8sU0ZDXks66R45jI-erjiBPD0mTAJh9OwCAZ1xVUT6XAwBGe9ncv99GJS_ujJAAyQrWAKl1YWK2Z_eiEzTeyqW1s2L91kbSJgM0DLQQ9nCJdAUG2i/img10.jpg" alt="Itch.io" class="card-image">
-<div class="card-content"><b>WhitePixel on Itch.io</b><span>Игра для Anbernic 28xx/35xx/40xx</span></div>
-</a>
-<a href="https://shikimori.io/ZVX" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img6.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/LuN4CqI-5E3xwkH4decc4_lFItAnrBOUaRYJM4Iv7hyilh7RP4KUL0DUiqFckIbOzz7uOTQE3WAhZyCrlBdR_hqN0yOEbgRqg2yYd5l3T0DGyp3e6p_DbD31d4P1GbvXPIqrK-9RSoyl/img6.jpg" alt="Shikimori" class="card-image">
-<div class="card-content"><b>Shikimori</b><span>Мой аниме-список</span></div>
-</a>
-<a href="https://myanimelist.net/profile/vZVXv" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img16.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/blirzn5QC6A_CO51nSkcIKmsbpj310goN8k3juk8uZLn8v8YkyTL3iyANcD0q6nJ6ecvTb5Wm5xWLE3ObwkuAYttTs7IiYSulvNtL8KpT3nRvaKTJwZGyE99hKQKlR0xEu-mErMP2sL3/img16.jpg" alt="MyAnimeList" class="card-image">
-<div class="card-content"><b>MyAnimeList</b><span>Международный профиль аниме</span></div>
-</a>
-<a href="https://steamcommunity.com/id/vZVXv" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img5.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/nF5NoQLoQDYB-P0iQx5sHUvIXtJLqR1Mutv4QB_4n3nmxtNrC9TKvi0MT1b8gHJi6rQkPgys5wP0E-S-v-m3FoNZwGVJnprgaChh0RFUcHpf2sHwMcy4FP1-BfUkuWou711UMbAiXfwa/img5.jpg" alt="Steam" class="card-image">
-<div class="card-content"><b>Steam Profile</b><span>Игровой профиль и статистика</span></div>
-</a>
-<a href="https://boosty.to/zvx" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img21.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/PRsN94VM9ldp0_sqmGqRcVahPukWzSLPJXPC-s7z42xaPVUtcYf3IHMUXDjr8ON0bLiRkRxyEnJg95zpqoX_2w0gWmXbAGpj_Z8xW4kSuR-skIi-TC96QMbsnthV787k0gOO6iqyP1cl/img21.jpg" alt="boosty" class="card-image">
-<div class="card-content"><b>boosty</b><span>На кофе с булочкой</span></div>
-</a>
-<a href="https://steamcommunity.com/id/vZVXv/myworkshopfiles/?p=1&numperpage=30" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img14.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/VavegBUf2hveB-F9c3Tit6swnReBcw09rzpnzHtrf5shYMrCLYb4A46Qd_wu6EPnaEv72fxAMot22QvhIaM2jgWkYMPtY4kdYyEppr0yRWEtwFxZi9CIsvLGtzXcJvDflZjgmwlOa8VT/img14.jpg" alt="Steam Workshop" class="card-image">
-<div class="card-content"><b>Мастерская Steam</b><span>Коллекция созданных модификаций</span></div>
-</a>
-<a href="https://www.nexusmods.com/profile/vZVXv/mods" class="card" target="_blank">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img15.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/_Lcxt9ACQNGTIufO2MLiWhRrsPHB_atKcB1Em2HYUkFUNB1SmcRmIQG_w-5csxYfKpQEjN54oMQKEVeLUPOpSloO-Cd-9VAqFaZw6RK_6gTtCFXMkXot5EoWOYoVAveqsAUG9QenDBmJ/img15.jpg" alt="NexusMods" class="card-image">
-<div class="card-content"><b>NexusMods</b><span>Опубликованные моды на портале</span></div>
-</a>
-</nav>
-</section>
-<section class="panel">
-<h2 class="section-title">Аутентификация</h2>
-<a href="https://mynickname.com/vZVXv" target="_blank" rel="noopener noreferrer">
-<img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/a4qK0XZf_bgdOffEx9iq6SHHY1_x9rzRYL4uEBEEfHugSPp7Qhx6PoJdNcfvRIr1VEIGee7OvPayoCjJSJpRF5ad8Lg6bVc1ZkQdYP0EQfQH8MmJ62cShWaDODwL8Buy7ROA1OIxf2Du/img.jpg" alt="Сертификат vzvxv" class="certificate-img">
-</a>
-</section>
-<footer class="panel">
-<h2 class="section-title">Ретро Терминал</h2>
-<div id="game-container">
-<div class="game-info">
-<div>SCORE: <span id="score">0</span></div>
-<div>BEST: <span id="best">0</span></div>
-<div>FPS: <span id="fps">0</span></div>
-</div>
-<canvas id="snakeGame" width="280" height="280"></canvas>
-<div id="start-screen" class="overlay">
-<button class="btn-game" id="btn-start">ЗАПУСК</button>
-</div>
-<div id="game-over" class="overlay" style="display: none;">
-<div style="color: #ff0055; margin-bottom: 15px; font-weight: bold; letter-spacing: 2px;">СБОЙ СИСТЕМЫ</div>
-<button class="btn-game" id="btn-restart">ПЕРЕЗАГРУЗКА</button>
-</div>
-</div>
-<div class="footer-text">SYSTEM.v2026 // vZVXv & AI</div>
-</footer>
+
+  <header class="panel">
+    <div class="clock-widget" id="clock">00:00:00</div>
+    <a href="https://github.com/vZVXv?tab=repositories" class="btn-profile" target="_blank" rel="noopener noreferrer">
+      <img src="https://avatars.githubusercontent.com/u/89864184?v=4" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/rmkgClYS39gNOSE6p5VBvYC-fXsKzN18kTFVfBkFw46xEq7aczD7Cy58ubrecI2VLEe2MeoeBD2sa5hp_B-3SSQl-XnzkEt5bIHPA8SMh2ujygSK6QCCHR1r6ggMiuTVqnuKzDRybxrK/ZVX.png" alt="Аватар vZVXv" class="profile-avatar">
+      <b>vZVXv</b>
+      <span>Developer & Gamer</span>
+    </a>
+  </header>
+
+  <section class="panel">
+    <h2 class="section-title">GitHub проекты</h2>
+    <nav class="card-grid">
+      <a href="https://vzvxv.github.io/ZVX-and-AI-PING-PONG" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img3.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/fS58mtLvIMJiX8snB9ap31FG3CeCxayUMAUxkFjEVpzx2vByz4yHJebrm6O-FFi_5U-f_8UIhx0LYDY9Eqod_PtXv1a1bzFWzy9dU6ZYfY6M-cHrbZDy-Ky3_9DDPFfJC5ocwmtvuHAM/img3.png" alt="AI PING PONG" class="card-image">
+        <div class="card-content"><b>AI PING PONG</b><span>Классическая игра созданная ИИ</span></div>
+      </a>
+      <a href="https://vzvxv.github.io/ZVX-CASINO/" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img8.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/_sxQxyWu5R--L6fSj3f-pcvwWzyZqH7Ch6XmrHnwa7TrA3kgUvhaPIMvfaIuWHQwiTovMCfgzfFTMSwcNwMh54OoH-jsv18-TJ31v999_UlqonVSQwaf0DqPJinmxPSnHRwvPpXqST-U/img8.png" alt="ZVX CASINO" class="card-image">
+        <div class="card-content"><b>ZVX CASINO</b><span>Казино с элементами выживания</span></div>
+      </a>
+      <a href="https://vzvxv.github.io/Steam-Finance-Pro/" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img7.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/K9z9Q5zeKP2bXqEf7AaZcG3nPYqNnvykmcHDS9HA8we0Qtr9B-LQ0n6Su3xhC7GpW_Sx6f0jTCBVnq8yw_sZylZjRTkRRoDr7o6hjhJ2q3w5CE0slgyGU1x4YVGFWAa_fQk_rNzG4Mtv/img7.png" alt="Steam Finance Pro" class="card-image">
+        <div class="card-content"><b>Steam Finance Pro</b><span>Дашборд истории покупок Steam</span></div>
+      </a>
+      <a href="https://vzvxv.github.io/TV-Show-Tracker/" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img9.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/q0m2Xp6BvObZjDtm-L-j7nanqcvLy4CHBmCSSAssfIUkyNcxGimcIY-Knerfn9332qfsZneld795LTOA4Phv2dEDpFPkrQyPda5__pRlUEoLvestMzzBxAc9ctTwh2UizhbFYhEzK-G6/img9.png" alt="TV Show Tracker" class="card-image">
+        <div class="card-content"><b>TV Show Tracker</b><span>Отслеживание просмотренных сезонов</span></div>
+      </a>
+      <a href="https://vzvxv.github.io/R.E.P.O.Bestiary/" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img2.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/FAceflfBY7eXF1AOkcEPZypG8QqmFS2SZiYrXshL_qlhHaeaAQq58LaIVAk2eom4l_jIGzWMc-aeXt-StnXSS2WTvQSzTcWeLpXi9-u7S-g65YBxkNrVkcUlOkUxijca-SLCkntturcn/img2.png" alt="R.E.P.O.Bestiary" class="card-image">
+        <div class="card-content"><b>R.E.P.O.Bestiary</b><span>R.E.P.O. Бестиарий</span></div>
+      </a>
+      <a href="https://vzvxv.github.io/Steam-License-Pro/" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img17.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/pH_19igDnGV_-9scQUmScSLcYOPpcGvmvqCjix-Yr7jzFNYm8ORbtKltlw6lVYIQ4rg816ecEl9noJ7hy9xrvikNsQ4pYZmV5iF1OGM7ZcXMxfhgDVqPrabv5FV6R1I35Ih4TCTkYrbn/img17.png" alt="Steam License Pro" class="card-image">
+        <div class="card-content"><b>Steam License Pro</b><span>Дашборд лицензий Steam</span></div>
+      </a>
+      <a href="https://vzvxv.github.io/Steam-Roulette/" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img18.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/ZgDYlUIrdXbLtnQlcYT9vex8Jb6wEIME3Ri2UFf4Bs4mQ1IxhR4qpye_VDfjFEWtKERQnbPTwlF-WztRy-4XcLion1ulvazgYwNODPH2fgtfDikpMnYtZOEsPeWMas4X4Jkk9DRRy9CX/img18.png" alt="Steam Roulette" class="card-image">
+        <div class="card-content"><b>Steam Roulette</b><span>Когда не знаешь во что сыграть</span></div>
+      </a>
+      <a href="https://github.com/vZVXv/ZVX-DSD" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img19.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/NajcQoIMKt295CujEcGFd7isjrPAMeryhIWUmtyQQpFFfBkB8LkCzZ9_aQXaPJG9lrAGWCk6F1QsvJE_Ylm3Bu1q31V1Caq-wGdO4lFF-Sssyk4udFZCS-6hwQ9wS7s8KKuK-odSDk1c/img19.png" alt="ZVX-DSD" class="card-image">
+        <div class="card-content"><b>ZVX-DSD</b><span>Виджет затемнения сайтов</span></div>
+      </a>
+      <a href="https://github.com/vZVXv/DMT" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img22.jpg" data-rkn="" alt="DMT" class="card-image">
+        <div class="card-content"><b>DMT</b><span>Переводчик сообщений в Discord</span></div>
+      </a>
+    </nav>
+  </section>
+
+  <section class="panel">
+    <h2 class="section-title">Русификаторы</h2>
+    <nav class="card-grid">
+      <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2272628653" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img11.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/9WdCCJG9Dt04B5jP3_1eU8vmWLLNbl-_FL3HT2NpQOtPiY_vLOR7JYgtXfT91mQChz4115Mr2N-_wX_mYjLLF_5m7XKYpgqr4FkhZfCP88MVN8U-gPRflwv1JRyaFRIDwrFN2Lza79Tb/img11.jpg" alt="VTOL VR" class="card-image">
+        <div class="card-content"><b>VTOL VR</b><span>Перевод игры на Русский язык</span></div>
+      </a>
+      <a href="https://www.nexusmods.com/bladeandsorcery/mods/10232" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img1.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/ssd7Jj4N6YFAnCZAkn3RGKm_ifNnrUqh4UzdKDKKepLzXVwNZY-m_LdCk6doxV9xcDDrSQmB0SK8d0OcaPAqhn4o0RZiM8g6gZGdSOrDjV4cCygLfYxzO2n2YHONMMNEr1DR7uVzyYh7/img1.png" alt="Blade & Sorcery" class="card-image">
+        <div class="card-content"><b>Blade & Sorcery</b><span>Перевод игры на Русский язык</span></div>
+      </a>
+      <a href="https://www.nexusmods.com/repo/mods/262" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img13.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/qNRoD1vzoF6hwHhJujVXftIX9fTHYCL7_8DEwiJmcbFnhvsfHNMq8lN8fF3V4EUH9QYDv0Rw_8PeO8K9N0zvCXw0U1Y0cKAeCRuoX2AmTjbigNyMlMRrIiGVc0SD-4AGZfOWXh6m9wh4/img13.png" alt="R.E.P.O." class="card-image">
+        <div class="card-content"><b>R.E.P.O.</b><span>Перевод игры на Русский язык</span></div>
+      </a>
+      <a href="https://www.nexusmods.com/demeo/mods/2" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img20.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/8ddd84tzXIogYor8ybPCePmyDyE6vi9HwVnaIEFT8sU5tp5Zs4e6APiaCMt9ifgAJZM3KsWVg09UIFqCRx2Z1gmt7n0sKJZiz6QudbXAt2kPkVkTgm5Kf0_3INVZwS_rbM76CH9VGPih/img20.png" alt="DEMEO" class="card-image">
+        <div class="card-content"><b>Demeo</b><span>Перевод игры на Русский язык</span></div>
+      </a>
+      <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3791325362" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img4.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/UPMOJikgaj6S9I99sD9BvN2cDbxImaccMcn6k-t2zkzPYYCBLEE1roGp_Cpyc1fdytm6kzBewnAhUT4ae0LaQZWULc_cKe0vzKtZROMcKEF96YLch5rbHcXKgPqIUYNsVOhdCLmVwYVt/img4.png" alt="Stacklands" class="card-image">
+        <div class="card-content"><b>Stacklands</b><span>Перевод игры на Русский язык</span></div>
+      </a>
+      <a href="https://boosty.to/zvx/posts/5e0d764f-ac33-423d-aed0-c39a23b969ae?share=success_publish_link" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img12.png" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/pIz7GiDkDQjkY9j-y-I1sNt2kQD8diApWevNf1bTIupRUXmeoq6izNTCohe_0c8VHn_S2cZX7SEGkdtcOVgBrv6gmFSsnCVIOJjr9D2l_5fYdGfumtf30jwWhflBJA4tKntbJoAHov0U/img12.png" alt="Stackmon" class="card-image">
+        <div class="card-content"><b>Stackmon</b><span>Перевод игры на Русский язык</span></div>
+      </a>
+    </nav>
+  </section>
+
+  <section class="panel">
+    <h2 class="section-title">Связи & Ресурсы</h2>
+    <nav class="card-grid">
+      <a href="https://vzvxv.itch.io/whitepixel" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img10.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/DqaQp2Gt1Mz5abmEEz8srVmqDiR8sU0ZDXks66R45jI-erjiBPD0mTAJh9OwCAZ1xVUT6XAwBGe9ncv99GJS_ujJAAyQrWAKl1YWK2Z_eiEzTeyqW1s2L91kbSJgM0DLQQ9nCJdAUG2i/img10.jpg" alt="Itch.io" class="card-image">
+        <div class="card-content"><b>WhitePixel on Itch.io</b><span>Игра для Anbernic 28xx/35xx/40xx</span></div>
+      </a>
+      <a href="https://shikimori.io/ZVX" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img6.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/LuN4CqI-5E3xwkH4decc4_lFItAnrBOUaRYJM4Iv7hyilh7RP4KUL0DUiqFckIbOzz7uOTQE3WAhZyCrlBdR_hqN0yOEbgRqg2yYd5l3T0DGyp3e6p_DbD31d4P1GbvXPIqrK-9RSoyl/img6.jpg" alt="Shikimori" class="card-image">
+        <div class="card-content"><b>Shikimori</b><span>Мой аниме-список</span></div>
+      </a>
+      <a href="https://myanimelist.net/profile/vZVXv" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img16.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/blirzn5QC6A_CO51nSkcIKmsbpj310goN8k3juk8uZLn8v8YkyTL3iyANcD0q6nJ6ecvTb5Wm5xWLE3ObwkuAYttTs7IiYSulvNtL8KpT3nRvaKTJwZGyE99hKQKlR0xEu-mErMP2sL3/img16.jpg" alt="MyAnimeList" class="card-image">
+        <div class="card-content"><b>MyAnimeList</b><span>Международный профиль аниме</span></div>
+      </a>
+      <a href="https://steamcommunity.com/id/vZVXv" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img5.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/nF5NoQLoQDYB-P0iQx5sHUvIXtJLqR1Mutv4QB_4n3nmxtNrC9TKvi0MT1b8gHJi6rQkPgys5wP0E-S-v-m3FoNZwGVJnprgaChh0RFUcHpf2sHwMcy4FP1-BfUkuWou711UMbAiXfwa/img5.jpg" alt="Steam" class="card-image">
+        <div class="card-content"><b>Steam Profile</b><span>Игровой профиль и статистика</span></div>
+      </a>
+      <a href="https://boosty.to/zvx" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img21.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/PRsN94VM9ldp0_sqmGqRcVahPukWzSLPJXPC-s7z42xaPVUtcYf3IHMUXDjr8ON0bLiRkRxyEnJg95zpqoX_2w0gWmXbAGpj_Z8xW4kSuR-skIi-TC96QMbsnthV787k0gOO6iqyP1cl/img21.jpg" alt="boosty" class="card-image">
+        <div class="card-content"><b>boosty</b><span>На кофе с булочкой</span></div>
+      </a>
+      <a href="https://steamcommunity.com/id/vZVXv/myworkshopfiles/?p=1&numperpage=30" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img14.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/VavegBUf2hveB-F9c3Tit6swnReBcw09rzpnzHtrf5shYMrCLYb4A46Qd_wu6EPnaEv72fxAMot22QvhIaM2jgWkYMPtY4kdYyEppr0yRWEtwFxZi9CIsvLGtzXcJvDflZjgmwlOa8VT/img14.jpg" alt="Steam Workshop" class="card-image">
+        <div class="card-content"><b>Мастерская Steam</b><span>Коллекция созданных модификаций</span></div>
+      </a>
+      <a href="https://www.nexusmods.com/profile/vZVXv/mods" class="card" target="_blank">
+        <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img15.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/_Lcxt9ACQNGTIufO2MLiWhRrsPHB_atKcB1Em2HYUkFUNB1SmcRmIQG_w-5csxYfKpQEjN54oMQKEVeLUPOpSloO-Cd-9VAqFaZw6RK_6gTtCFXMkXot5EoWOYoVAveqsAUG9QenDBmJ/img15.jpg" alt="NexusMods" class="card-image">
+        <div class="card-content"><b>NexusMods</b><span>Опубликованные моды на портале</span></div>
+      </a>
+    </nav>
+  </section>
+
+  <section class="panel">
+    <h2 class="section-title">Аутентификация</h2>
+    <a href="https://mynickname.com/vZVXv" target="_blank" rel="noopener noreferrer">
+      <img src="https://raw.githubusercontent.com/vZVXv/ZVX/refs/heads/main/Images/img.jpg" data-rkn="https://psv4.vkuserphoto.ru/s/v1/d2/a4qK0XZf_bgdOffEx9iq6SHHY1_x9rzRYL4uEBEEfHugSPp7Qhx6PoJdNcfvRIr1VEIGee7OvPayoCjJSJpRF5ad8Lg6bVc1ZkQdYP0EQfQH8MmJ62cShWaDODwL8Buy7ROA1OIxf2Du/img.jpg" alt="Сертификат vzvxv" class="certificate-img">
+    </a>
+  </section>
+
+  <footer class="panel">
+    <h2 class="section-title">Ретро Терминал</h2>
+    <div id="game-container">
+      <div class="game-info">
+        <div>SCORE: <span id="score">0</span></div>
+        <div>BEST: <span id="best">0</span></div>
+        <div>FPS: <span id="fps">0</span></div>
+      </div>
+      <canvas id="snakeGame" width="280" height="280"></canvas>
+      <div id="start-screen" class="overlay">
+        <button class="btn-game" id="btn-start">ЗАПУСК</button>
+      </div>
+      <div id="game-over" class="overlay" style="display: none;">
+        <div style="color: #ff0055; margin-bottom: 12px; font-weight: bold; letter-spacing: 2px;">СБОЙ СИСТЕМЫ</div>
+        <button class="btn-game" id="btn-restart">ПЕРЕЗАГРУЗКА</button>
+      </div>
+    </div>
+    <div class="footer-text">SYSTEM.v2026 // vZVXv & AI</div>
+  </footer>
+
 </main>
+
 <script>
+// === Логика анимации живых обоев ===
+const wpCanvas = document.getElementById('wallpaperCanvas');
+const wpCtx = wpCanvas.getContext('2d');
+let wpWidth, wpHeight, stars = [];
+
+function resizeWpCanvas() {
+    wpWidth = wpCanvas.width = window.innerWidth;
+    wpHeight = wpCanvas.height = window.innerHeight;
+    initStars();
+}
+
+function initStars() {
+    stars = [];
+    const count = Math.floor((wpWidth * wpHeight) / 3500);
+    for (let i = 0; i < count; i++) {
+        stars.push({
+            x: Math.random() * wpWidth,
+            y: Math.random() * (wpHeight * 0.7),
+            size: Math.random() * 1.8 + 0.4,
+            alpha: Math.random(),
+            twinkleSpeed: Math.random() * 0.02 + 0.005
+        });
+    }
+}
+
+function drawBackground() {
+    const skyGrad = wpCtx.createLinearGradient(0, 0, 0, wpHeight);
+    skyGrad.addColorStop(0, '#03050c');
+    skyGrad.addColorStop(0.5, '#0b1329');
+    skyGrad.addColorStop(1, '#1b120c');
+    wpCtx.fillStyle = skyGrad;
+    wpCtx.fillRect(0, 0, wpWidth, wpHeight);
+
+    wpCtx.fillStyle = '#ffffff';
+    stars.forEach(star => {
+        star.alpha += star.twinkleSpeed;
+        if (star.alpha > 1 || star.alpha < 0.2) {
+            star.twinkleSpeed *= -1;
+        }
+        wpCtx.globalAlpha = Math.abs(star.alpha);
+        wpCtx.beginPath();
+        wpCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        wpCtx.fill();
+    });
+    wpCtx.globalAlpha = 1.0;
+
+    const moonX = wpWidth * 0.78;
+    const moonY = wpHeight * 0.22;
+    const moonRadius = 40;
+    
+    const moonGlow = wpCtx.createRadialGradient(moonX, moonY, moonRadius * 0.5, moonX, moonY, moonRadius * 3.5);
+    moonGlow.addColorStop(0, 'rgba(255, 253, 235, 0.2)');
+    moonGlow.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    wpCtx.fillStyle = moonGlow;
+    wpCtx.beginPath();
+    wpCtx.arc(moonX, moonY, moonRadius * 3.5, 0, Math.PI * 2);
+    wpCtx.fill();
+
+    wpCtx.fillStyle = '#fffee8';
+    wpCtx.beginPath();
+    wpCtx.arc(moonX, moonY, moonRadius, 0, Math.PI * 2);
+    wpCtx.fill();
+
+    drawPineForest(wpHeight * 0.68, 0.08, '#080d1a');
+    drawPineForest(wpHeight * 0.78, 0.14, '#03060c');
+}
+
+function drawPineForest(baseY, density, color) {
+    wpCtx.fillStyle = color;
+    wpCtx.beginPath();
+    wpCtx.moveTo(0, wpHeight);
+    wpCtx.lineTo(0, baseY);
+
+    let step = 45;
+    for (let x = 0; x <= wpWidth + step; x += step) {
+        let peakHeight = baseY - (Math.sin(x * density) * 40 + Math.cos(x * 0.05) * 60 + 80);
+        peakHeight += (Math.sin(x * 12.9898) * 43758.5453 % 1) * 30;
+        wpCtx.lineTo(x, peakHeight);
+    }
+
+    wpCtx.lineTo(wpWidth, wpHeight);
+    wpCtx.closePath();
+    wpCtx.fill();
+}
+
+function animateWallpaper() {
+    wpCtx.clearRect(0, 0, wpWidth, wpHeight);
+    drawBackground();
+    requestAnimationFrame(animateWallpaper);
+}
+
+window.addEventListener('resize', resizeWpCanvas);
+resizeWpCanvas();
+animateWallpaper();
+
 // === Логика кнопки "Я♥РКН" ===
 const rknToggleBtn = document.getElementById('rknToggle');
 let isRknActive = false;
@@ -274,26 +410,17 @@ function applyRKNState(state) {
     rknToggleBtn.classList.toggle('active', isRknActive);
     
     document.querySelectorAll('img[data-rkn]').forEach(img => {
-        // Используем getAttribute, чтобы получить сырую ссылку из HTML, минуя трансформации браузера
         if (!img.hasAttribute('data-original')) {
             img.setAttribute('data-original', img.getAttribute('src')); 
         }
         
         const targetSrc = isRknActive ? img.getAttribute('data-rkn') : img.getAttribute('data-original');
         
-        // Проверяем, изменилась ли ссылка на самом деле
         if (img.getAttribute('src') !== targetSrc) {
-            // Уменьшаем прозрачность для эффекта загрузки
             img.style.opacity = '0.3';
-            
-            // Принудительно сбрасываем src, чтобы браузер начал новую загрузку
             img.removeAttribute('src');
-            
-            // Используем микротаймаут, чтобы заставить DOM обновиться
             setTimeout(() => {
                 img.setAttribute('src', targetSrc);
-                
-                // Возвращаем видимость после успешной загрузки или ошибки
                 img.onload = () => img.style.opacity = '1';
                 img.onerror = () => img.style.opacity = '1';
             }, 50);
@@ -303,13 +430,11 @@ function applyRKNState(state) {
 
 rknToggleBtn.addEventListener('click', () => applyRKNState(!isRknActive));
 
-// Автоматическая активация при запуске с телефона
 if (window.innerWidth <= 900 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     applyRKNState(false);
 }
-// ===============================
 
-
+// === Управление прокруткой и навигацией ===
 const container = document.getElementById('scroll-box');
 const navDots = document.querySelectorAll('.nav-dot');
 let isDesktop = window.innerWidth > 900;
@@ -368,6 +493,7 @@ function updateClock() {
 }
 setInterval(updateClock, 1000); updateClock();
 
+// === Игра "Змейка" ===
 const canvas = document.getElementById("snakeGame");
 const ctx = canvas.getContext("2d");
 const scoreEl = document.getElementById("score"), bestEl = document.getElementById("best"), fpsEl = document.getElementById("fps");
@@ -395,9 +521,7 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
-let touchStartX = 0;
-let touchStartY = 0;
-
+let touchStartX = 0, touchStartY = 0;
 canvas.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;
     touchStartY = e.changedTouches[0].screenY;
@@ -414,8 +538,7 @@ function handleSwipe(startX, startY, endX, endY) {
         if (startScreen.style.display !== "none" || gameOverEl.style.display !== "none") startGame();
         return;
     }
-    const dx = endX - startX;
-    const dy = endY - startY;
+    const dx = endX - startX, dy = endY - startY;
     if (Math.abs(dx) > Math.abs(dy)) {
         if (dx > 30 && d !== "LEFT") nextD = "RIGHT";
         else if (dx < -30 && d !== "RIGHT") nextD = "LEFT";
@@ -474,7 +597,7 @@ function startGame() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    const targetIndex = 2; 
+    const targetIndex = 0; 
     setTimeout(() => {
         if (isDesktop) {
             container.scrollLeft = targetIndex * window.innerWidth;
